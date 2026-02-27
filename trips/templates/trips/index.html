@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carpool Connect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+        .hero {
+            height: 85vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #3b82f6;
+        }
+
+        .btn-primary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-secondary {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #374151;
+        }
+
+        .features {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .features h3 {
+            margin-bottom: 40px;
+            font-size: 28px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Carpool Connect</h1>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Find Ride</a>
+        <a href="#">Offer Ride</a>
+        <a href="#">Login</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h2>Share Rides. Save Money. Reduce Traffic.</h2>
+        <p>Connect with drivers and passengers traveling along the same route. Smart matching powered by a node-based road network.</p>
+        <button class="btn btn-primary">Find a Ride</button>
+        <button class="btn btn-secondary">Offer a Ride</button>
+    </div>
+</section>
+
+<section class="features">
+    <h3>Why Choose Carpool Connect?</h3>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h4>Smart Route Matching</h4>
+            <p>Optimized node-based routing ensures efficient carpooling with minimal detours.</p>
+        </div>
+        <div class="feature-card">
+            <h4>Mid-Ride Joining</h4>
+            <p>Passengers can join active trips if they’re within proximity of the route.</p>
+        </div>
+        <div class="feature-card">
+            <h4>Transparent Fare System</h4>
+            <p>Dynamic fare calculation based on hop-sharing ensures fair pricing.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Carpool Connect. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
