@@ -77,16 +77,9 @@ button:hover {
 <div class="container">
     <h2>Create Account</h2>
 
-    <form method="POST">
-        <input type="text" name="name" placeholder="Full Name" required>
-        <input type="email" name="email" placeholder="Email Address" required>
-        <input type="password" name="password" placeholder="Password" required>
-
-        <select name="role" required>
-            <option value="" disabled selected>Select Role</option>
-            <option value="driver">Driver</option>
-            <option value="passenger">Passenger</option>
-        </select>
+    <form method="POST" action="{% url 'users:register' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
 
         <button type="submit">Register</button>
     </form>
