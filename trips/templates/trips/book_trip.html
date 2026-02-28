@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Available Rides</title>
+
+
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f4f6;
+    margin: 40px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 35px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.ride-list {
+    max-width: 1100px;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.ride {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 15px;
+}
+
+.ride:last-child {
+    border-bottom: none;
+}
+
+.ride-details {
+    flex: 1;
+    line-height: 1.8;
+    color: #374151;
+}
+
+.ride-details strong {
+    font-size: 16px;
+    color: #111827;
+}
+
+.price {
+    color: #059669;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.seats {
+    color: #d97706;
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.book-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-left: 20px;
+}
+
+.book-btn:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+.book-btn:active {
+    transform: scale(0.96);
+}
+</style>
+</head>
+
+<body>
+
+<h1>Available Rides</h1>
+
+<div class="ride-list">
+
+    {% for tr in trips %}
+    <div class="ride">
+        <div class="ride-details">
+                <strong>{{tr.name|capfirst}}</strong> | {{tr.start_node.point|capfirst}}|{{tr.end_node.point|capfirst}}  ||| {{tr.departure_time}} – {{tr.arrival_time}} | 
+                Seats: <span class="seats">{{tr.available_seats}} Available</span> | 
+                Price: <span class="price">₹{{tr.ticket_price}}</span>
+            </div>
+            <button class="book-btn">Book</button>
+        </div>
+    {% endfor %}
+
+
+</div>
+
+</body>
+</html>

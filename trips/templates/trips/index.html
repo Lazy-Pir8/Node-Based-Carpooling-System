@@ -138,9 +138,9 @@
 <header>
     <h1>Carpool Connect</h1>
     <nav>
-        <a href="#">Home</a>
-        <a href="#">Find Ride</a>
-        <a href="#">Offer Ride</a>
+        <a href="{% url 'trips:index' %}">Home</a>
+        <a href="{% url 'trips:book_trip' %}">Find Ride</a>
+        <a href="{% url 'trips:add_trip' %}">Offer Ride</a>
         <a href="#">Login</a>
     </nav>
 </header>
