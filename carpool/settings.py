@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Manual Added Settings
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = 'trips:index'
 
 # Application definition
 
