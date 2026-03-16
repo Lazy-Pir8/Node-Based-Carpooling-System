@@ -4,10 +4,10 @@ from .models import Node, Edge
 
 @admin.register(Node)
 class NodeAdmin(admin.ModelAdmin):
-    list_display = ('point',)
-    search_fields = ('point',)
+    list_display = ('name',)
+    search_fields = ('name',)
 
 @admin.register(Edge)
 class EdgeAdmin(admin.ModelAdmin):
     list_display = ('from_node', 'to_node')
-    search_fields = ('from_node__point', 'to_node__point')
+    search_fields = ('from_node__name', 'to_node__name')

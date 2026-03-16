@@ -28,6 +28,8 @@ def bfs_path(start_node, end_node):
 
     while node is not None:
         path.append(node)
+        if node not in parent:
+            return []  # No path found
         node = parent[node]
 
     path.reverse()

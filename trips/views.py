@@ -49,11 +49,11 @@ def book_trip(request):
     })
 
 
-def display_route(request, trip_id):
-    trip = Trip.objects.get(id=trip_id)
-    trip_nodes = TripNode.objects.filter(trip=trip).order_by('order')
-    route = [tn.node for tn in trip_nodes]
-    return render(request, 'trips/display_route.html', {
-        "trip": trip,
-        "route": route
+
+def trip_detail(request, slug):
+    trip = Trip.objects.get(slug=slug)
+    route = TripNode.objects.filter(trip=trip).order_by('order')
+    return render(request, 'trips/trip_detail.html', {
+      "trip": trip,
+      "route": route
     })

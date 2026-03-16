@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip-Details</title>
+</head>
+<body>
+    <h3>Trip Details</h3>
+    <p> Name: {{trip.name}}</p>
+
+    <h4>Route:</h4>
+    <ul>
+    <p>
+    {% for step in route %}
+        {{ step.node.name }}
+        {% if not forloop.last %}
+            →
+        {% endif %}
+    {% endfor %}
+    </p>  
+    </ul>
+
+</body>
+</html>
