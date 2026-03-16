@@ -13,9 +13,13 @@ class DriverForm(ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email', 'phone_number']
 
-
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)
 
 class RegisterForm(ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    
     class Meta:
         model = User
         fields = ['username', 'email', 'password', 'role']  

@@ -32,6 +32,8 @@ def register_view(request):
         
         if form.is_valid():
             user = form.save()
+            user.set_password(form.cleaned_data['password'])
+            user.save()
 
             return redirect('trips:index')
     else:
