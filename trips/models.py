@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
 User = get_user_model()
+from network.models import Node, Edge
 # Create your models here.
 
 class Trip(models.Model):
@@ -22,3 +23,12 @@ class Trip(models.Model):
     def __str__(self):
         return f"{self.name} - {self.start_node} to {self.end_node} at {self.departure_time}"
 
+
+
+class TripNode(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    node = models.ForeignKey(Node, on_delete=models.CASCADE)
+    order = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.trip.id} - {self.node.point} (Order: {self.order})"

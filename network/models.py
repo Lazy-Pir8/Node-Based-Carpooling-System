@@ -11,3 +11,6 @@ class Node(models.Model):
 class Edge(models.Model):
     from_node = models.ForeignKey(Node, related_name = "from_node", on_delete=models.CASCADE)
     to_node = models.ForeignKey(Node, related_name = "to_node", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.from_node} to {self.to_node}"
