@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from django.contrib.auth.views import LoginView, LogoutView
+from trips.models import Trip
+from trips.models import TripNode
 
 # Create your views here.
 
@@ -40,3 +42,10 @@ def register_view(request):
         form = RegisterForm()
     
     return render(request, 'users/register.html', {'form': form})
+
+
+def profile_view(request, username):
+    user = User.objects.get(username=username)
+    trips = Trip.objects.filter(created_by__username=username)
+
+    return render(request, 'users/profile_driver.html', {"profile_user": user, "trips": trips,})

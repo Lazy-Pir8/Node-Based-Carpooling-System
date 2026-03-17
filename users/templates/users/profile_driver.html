@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h3 {
+            margin-top: 30px;
+            color: #555;
+        }
+
+        .trip-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .trip-card {
+            background: #f9fafc;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+        }
+
+        .trip-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .trip-details {
+            margin-top: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #999;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{ profile_user.username }}'s Profile</h1>
+
+        <h3>Trips Created</h3>
+
+        <ul class="trip-list">
+            {% for trip in trips %}
+                <li class="trip-card">
+                    <div class="trip-title">{{ trip.name }}</div>
+                    <div class="trip-details">
+                        <strong>From:</strong> {{ trip.start_node }} <br>
+                        <strong>To:</strong> {{ trip.end_node }} <br>
+                        <strong>Departure:</strong> {{ trip.departure_time }}
+                        <strong>Arrival:</strong> {{ trip.arrival_time }}
+                  
+
+                    </div>
+                </li>
+            {% empty %}
+                <li class="empty">No trips created yet.</li>
+            {% endfor %}
+            <a href="{% url 'trips:book_trip' %}">
+            <Button>Go Back</Button>
+            </a>
+        </ul>
+    </div>
+</body>
+</html>

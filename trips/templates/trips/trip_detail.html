@@ -1,25 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trip-Details</title>
-</head>
-<body>
-    <h3>Trip Details</h3>
-    <p> Name: {{trip.name}}</p>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trip Details</title>
 
-    <h4>Route:</h4>
-    <ul>
-    <p>
-    {% for step in route %}
-        {{ step.node.name }}
-        {% if not forloop.last %}
-            →
-        {% endif %}
-    {% endfor %}
-    </p>  
-    </ul>
+<style>
+
+body{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:linear-gradient(135deg,#f8fafc,#eef2f7);
+    margin:40px;
+}
+
+/* Title */
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+    font-weight:600;
+    color:#1f2937;
+}
+
+/* Card container */
+
+.trip-card{
+    max-width:800px;
+    margin:auto;
+    background:#ffffff;
+    border-radius:14px;
+    padding:35px 40px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 10px 28px rgba(0,0,0,0.08);
+}
+
+/* Trip name */
+
+.trip-name{
+    font-size:20px;
+    font-weight:600;
+    color:#111827;
+    margin-bottom:20px;
+}
+
+/* Route section */
+
+.route-title{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:10px;
+    color:#374151;
+}
+
+/* Route display */
+
+.route{
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    padding:15px 20px;
+    border-radius:10px;
+    line-height:1.8;
+    font-size:15px;
+    color:#374151;
+}
+
+/* Node styling */
+
+.node{
+    font-weight:500;
+    color:#1f2937;
+}
+
+/* Arrow */
+
+.arrow{
+    margin:0 6px;
+    color:#6b7280;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Trip Details</h1>
+
+<div class="trip-card">
+
+<div class="trip-name">
+Name: {{trip.name}}
+</div>
+
+<div class="route-title">
+Route
+</div>
+
+<div class="route">
+
+{% for step in route %}
+
+<span class="node">{{ step.node.name }}</span>
+
+{% if not forloop.last %}
+
+
+<span class="arrow">→</span>
+{% endif %}
+
+{% endfor %}
+
+</div>
+<a href="{% url 'trips:book_trip' %}" class="book-link">
+    <button>To Book Window</button>
+</a>
+
+</div>
 
 </body>
 </html>

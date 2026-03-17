@@ -9,7 +9,7 @@ from django.utils.timezone import now
 
 class Trip(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=False)
+    slug = models.SlugField(unique=True)
     start_node = models.ForeignKey(
         'network.Node', related_name='start_node', on_delete=models.CASCADE
     )
@@ -22,7 +22,7 @@ class Trip(models.Model):
     available_seats = models.IntegerField()
     arrival_time = models.DateTimeField(null=True, blank=True)
     ticket_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,related_name="created_trips", on_delete=models.CASCADE, null=True, blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,related_name="created_trips", on_delete=models.CASCADE, null=False, blank=False)
 
     def save(self, *args, **kwargs):
         if not self.slug:

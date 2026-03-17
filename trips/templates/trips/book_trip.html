@@ -1,91 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Available Rides</title>
 
-
 <style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f3f4f6;
-    margin: 40px;
+
+/* ===== BODY ===== */
+body{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:linear-gradient(135deg,#f8fafc,#eef2f7);
+    margin:40px;
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 35px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+/* ===== TITLE ===== */
+h1{
+    text-align:center;
+    margin-bottom:35px;
+    font-weight:600;
+    color:#1f2937;
 }
 
-.ride-list {
-    max-width: 1100px;
-    margin: auto;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 10px 25px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+/* ===== GRID CONTAINER ===== */
+.ride-list{
+    max-width:1200px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap:20px;
 }
 
-.ride {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 22px 0;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 15px;
+/* ===== CARD ===== */
+.ride{
+    background:#ffffff;
+    border-radius:14px;
+    padding:20px;
+    border:1px solid #e5e7eb;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    transition:all .25s ease;
 }
 
-.ride:last-child {
-    border-bottom: none;
+.ride:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 22px rgba(0,0,0,0.08);
 }
 
-.ride-details {
-    flex: 1;
-    line-height: 1.8;
-    color: #374151;
+/* ===== TOP SECTION ===== */
+.ride-header{
+    font-size:17px;
+    font-weight:600;
+    color:#111827;
+    margin-bottom:10px;
 }
 
-.ride-details strong {
-    font-size: 16px;
-    color: #111827;
+/* ===== ROUTE ===== */
+.route{
+    font-size:14px;
+    color:#374151;
+    margin-bottom:10px;
 }
 
-.price {
-    color: #059669;
-    font-weight: 600;
-    margin-left: 6px;
+/* ===== TIME ===== */
+.time{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:12px;
 }
 
-.seats {
-    color: #d97706;
-    font-weight: 600;
-    margin-left: 4px;
+/* ===== BOTTOM ROW ===== */
+.ride-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-.book-btn {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 9px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    margin-left: 20px;
+/* ===== PRICE ===== */
+.price{
+    color:#059669;
+    font-weight:600;
 }
 
-.book-btn:hover {
-    background-color: #1d4ed8;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+/* ===== SEATS (circle badge) ===== */
+.seats{
+    background:#fef3c7;
+    color:#92400e;
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:20px;
+    font-weight:500;
 }
 
-.book-btn:active {
-    transform: scale(0.96);
+/* ===== BUTTON ===== */
+.book-btn{
+    margin-top:15px;
+    width:100%;
+
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:500;
+
+    transition:.2s;
 }
+
+.book-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(37,99,235,0.35);
+}
+
 </style>
 </head>
 
@@ -95,19 +127,50 @@ h1 {
 
 <div class="ride-list">
 
-    {% for tr in trips %}
-    <div class="ride">
-        <div class="ride-details">
-                <strong>{{tr.name|capfirst}}</strong> | {{tr.start_node.point|capfirst}}|{{tr.end_node.point|capfirst}}  ||| {{tr.departure_time}} – {{tr.arrival_time}} | 
-                Seats: <span class="seats">{{tr.available_seats}} Available</span> | 
-                Price: <span class="price">₹{{tr.ticket_price}}</span>
-            </div>
-            <button class="book-btn">Book</button>
+{% for tr in trips %}
+
+<div class="ride">
+
+    <div>
+
+        <div class="ride-header">
+            {{ tr.name|capfirst }}
         </div>
-    {% endfor %}
+        <div class="ride-header">
+            Driver: <a href="{% url 'users:profile' username=tr.created_by.username %}">{{ tr.created_by.username|capfirst }}</a>
+        </div>
+
+        <div class="route">
+            {{ tr.start_node.point|capfirst }} → {{ tr.end_node.point|capfirst }}
+        </div>
+
+        <div class="time">
+            {{ tr.departure_time }} – {{ tr.arrival_time }}
+        </div>
+
+        <div class="ride-footer">
+            <span class="price">₹{{ tr.ticket_price }}</span>
+            <span class="seats">{{ tr.available_seats }} seats</span>
+        </div>
+
+    </div>
+
+    <div>
+        <a href="{% url 'trips:trip_detail' slug=tr.slug %}">
+            <button class="book-btn">View / Book</button>
+        </a>
+    </div>
 
 
 </div>
+
+
+{% endfor %}
+
+</div>
+    <a href="{% url 'trips:index' %}">
+    <Button>Go Back</Button>
+   </a>
 
 </body>
 </html>
