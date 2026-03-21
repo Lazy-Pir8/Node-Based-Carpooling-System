@@ -6,6 +6,9 @@ User = get_user_model()
 from django.contrib.auth.decorators import login_required
 from network.models import Node, Edge
 from network.graph_utils import bfs_path
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import TripSerializer, TripNodeSerializer
 
 
 
@@ -49,11 +52,10 @@ def book_trip(request):
     })
 
 
-
-def trip_detail(request, slug):
-    trip = Trip.objects.get(slug=slug)
-    route = TripNode.objects.filter(trip=trip).order_by('order')
+def trip_detail(request, username):
+    trip = Trip.objects.get(username=username)
+    trip_nodes = TripNode.objects.filter(trip=trip).order_by('order')
     return render(request, 'trips/trip_detail.html', {
-      "trip": trip,
-      "route": route
+        "trip": trip,
+        "trip_nodes": trip_nodes
     })
