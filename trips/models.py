@@ -23,7 +23,7 @@ class Trip(models.Model):
     arrival_time = models.DateTimeField(null=True, blank=True)
     ticket_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL,related_name="created_trips", on_delete=models.CASCADE, null=False, blank=False)
-
+    passengers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='booked_trips', blank=True)
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.name)
@@ -34,8 +34,9 @@ class Trip(models.Model):
 
 
 
+
 class TripNode(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    trip = models.ForeignKey('Trip',related_name='trip_nodes', on_delete=models.CASCADE)
     node = models.ForeignKey(Node, on_delete=models.CASCADE)
     order = models.IntegerField()
 

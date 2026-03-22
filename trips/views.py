@@ -1,61 +1,76 @@
-from django.shortcuts import render
-from .forms import TripForm
-from .models import Trip, TripNode
-from django.contrib.auth import get_user_model
-User = get_user_model()
-from django.contrib.auth.decorators import login_required
-from network.models import Node, Edge
+from rest_framework import viewsets, permissions
+from rest_framework.exceptions import PermissionDenied
 from network.graph_utils import bfs_path
-from rest_framework.decorators import api_view
+from .models import Trip, TripNode
+from .serializers import TripSerializer
+from django.shortcuts import render
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import TripSerializer, TripNodeSerializer
+from rest_framework.views import APIView
+from django.views import View
+from rest_framework.renderers import TemplateHTMLRenderer
 
 
-
-# Create your views here.
-
-def index(request):
-    return render(request, 'trips/index.html')
-
-@login_required
-def add_trip(request):
-    if request.method == 'POST':
-        if request.user.role != 'driver':
-            return render(request, 'trips/index.html', {"error": "Only drivers can add trips."})
-        form = TripForm(request.POST)
-        if form.is_valid():
-            trip = form.save(commit=False)
-            trip.created_by = request.user
-            trip.save()
-
-            start = trip.start_node
-            end = trip.end_node
-            
-            route = bfs_path(start, end)
-
-            for i, node in enumerate(route):
-                TripNode.objects.create(trip=trip, node=node, order=i)
-                
-
-            return render(request, 'trips/index.html')
-    else: 
-        form = TripForm()
-    return render(request, 'trips/add_trip.html', {"form": form})
-
-@login_required
-def book_trip(request):
-    trips = Trip.objects.all()
-    if request.user.role != 'passenger':
-        return render(request, 'trips/index.html', {"error": "Only passengers can book trips."})
-    return render(request, 'trips/book_trip.html', {
-        "trips": trips
-    })
+class IndexView(View):
+    def get(self, request):
+        return render(request, 'trips/index.html')
 
 
-def trip_detail(request, username):
-    trip = Trip.objects.get(username=username)
-    trip_nodes = TripNode.objects.filter(trip=trip).order_by('order')
-    return render(request, 'trips/trip_detail.html', {
-        "trip": trip,
-        "trip_nodes": trip_nodes
-    })
+class TripViewSet(viewsets.ModelViewSet):
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+
+        if user.role != 'driver':
+            raise PermissionDenied("Only drivers can create trips.")
+
+        trip = serializer.save(created_by=user)
+
+        route = bfs_path(trip.start_node, trip.end_node)
+
+        TripNode.objects.bulk_create([
+            TripNode(trip=trip, node=node, order=i)
+            for i, node in enumerate(route)
+        ])
+
+class BookTripView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, name):
+        if request.user.role != 'passenger':
+            return Response({"error": "Only passengers allowed"}, status=403)
+
+        try:
+            trip = Trip.objects.get(name=name)
+        except Trip.DoesNotExist:
+            return Response({"error": "Trip not found"}, status=404)
+
+        trip.passengers.add(request.user)
+
+        return Response(TripSerializer(trip).data)
+
+class ListTripsView(APIView):
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [TemplateHTMLRenderer]
+
+    def get(self, request):
+        trips = Trip.objects.all()
+        return Response(
+        {'trips': trips},
+        template_name='trips/list_trips.html'
+    )
+
+
+class TripDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [TemplateHTMLRenderer]
+
+    def get(self, request, username):
+        trips = Trip.objects.filter(created_by__username=username)
+        route = TripNode.objects.filter(trip__created_by__username=username).order_by('order')
+
+        return Response({'trips': trips, 'route': route}, template_name='trips/trip_detail.html')

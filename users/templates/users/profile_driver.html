@@ -61,6 +61,7 @@
             margin-top: 8px;
             color: #666;
             font-size: 14px;
+            line-height: 1.5;
         }
 
         .empty {
@@ -68,11 +69,26 @@
             color: #999;
             margin-top: 20px;
         }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 12px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back-btn:hover {
+            background: #555;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
+
         <h1>{{ profile_user.username }}'s Profile</h1>
 
         <h3>Trips Created</h3>
@@ -81,22 +97,25 @@
             {% for trip in trips %}
                 <li class="trip-card">
                     <div class="trip-title">{{ trip.name }}</div>
+
                     <div class="trip-details">
                         <strong>From:</strong> {{ trip.start_node }} <br>
                         <strong>To:</strong> {{ trip.end_node }} <br>
-                        <strong>Departure:</strong> {{ trip.departure_time }}
+                        <strong>Departure:</strong> {{ trip.departure_time }} <br>
                         <strong>Arrival:</strong> {{ trip.arrival_time }}
-                  
-
                     </div>
                 </li>
+
             {% empty %}
                 <li class="empty">No trips created yet.</li>
             {% endfor %}
-            <a href="{% url 'trips:book_trip' %}">
-            <Button>Go Back</Button>
-            </a>
         </ul>
+
+        <!-- FIXED BACK BUTTON -->
+        <a href="{% url 'trips:index' %}" class="back-btn">
+            Go Back
+        </a>
+
     </div>
 </body>
 </html>
