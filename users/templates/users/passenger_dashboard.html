@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Passenger Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .trip-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background: #f9fafc;
+        }
+
+        .trip-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .empty {
+            text-align: center;
+            color: gray;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 12px;
+            background: black;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>{{ profile_user.username }}'s Dashboard</h1>
+
+    <p><strong>Role:</strong> {{ profile_user.role }}</p>
+    <p><strong>Email:</strong> {{ profile_user.email }}</p>
+
+    <h3>Your Booked Trips</h3>
+
+    {% for trip in trips %}
+        <div class="trip-card">
+            <div class="trip-title">{{ trip.name }}</div>
+
+            <p>
+                <strong>From:</strong> {{ trip.start_node }} <br>
+                <strong>To:</strong> {{ trip.end_node }} <br>
+                <strong>Departure:</strong> {{ trip.departure_time }} <br>
+                <strong>Driver:</strong> {{ trip.created_by.username }} <br>
+                <strong>Price:</strong> ₹{{ trip.ticket_price }}
+            </p>
+        </div>
+
+    {% empty %}
+        <p class="empty">You haven't booked any trips yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'trips:index' %}" class="back-btn">Go Back</a>
+
+</div>
+</body>
+</html>

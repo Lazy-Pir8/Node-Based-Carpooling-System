@@ -13,6 +13,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from django.views import View
+from django.shortcuts import get_object_or_404
+from django.utils.timezone import now
+from django.contrib import messages
+from django.shortcuts import redirect
+
 
 # Create your views here.
 
@@ -80,3 +85,36 @@ class ProfileView(APIView):
         user = User.objects.get(username=username)
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+def driver_dashboard(request):
+    if request.user.role != 'driver':
+        messages.error(request, "Only drivers can access the dashboard.")
+        return redirect('trips:index')
+    trips = Trip.objects.filter(created_by=request.user)
+  
+    return render(request, 'users/driver_dashboard.html',{
+    "profile_user": request.user, 
+    "trips": trips
+    })
+
+def passenger_dashboard(request):
+    if request.user.role != 'passenger':
+        messages.error(request, "Only passengers can access the dashboard.")
+        return redirect('trips:index')
+    trips = request.user.booked_trips.all()
+  
+    return render(request, 'users/passenger_dashboard.html',{
+    "profile_user": request.user, 
+    "trips": trips
+    })
+
+def dashboard_redirect(request):
+    if not request.user.is_authenticated:
+        return redirect('users:login')
+    if request.user.role == 'driver':
+        return redirect('users:driver_dashboard')
+    elif request.user.role == 'passenger':
+        return redirect('users:passenger_dashboard')
+    else:
+        messages.error(request, "Invalid user role.")
+        return redirect('trips:index')

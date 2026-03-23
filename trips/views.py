@@ -4,6 +4,9 @@ from network.graph_utils import bfs_path
 from .models import Trip, TripNode
 from .serializers import TripSerializer
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.shortcuts import redirect
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -40,18 +43,26 @@ class TripViewSet(viewsets.ModelViewSet):
 
 class BookTripView(APIView):
     permission_classes = [IsAuthenticated]
-    def post(self, request, name):
+    def post(self, request, slug):
         if request.user.role != 'passenger':
-            return Response({"error": "Only passengers allowed"}, status=403)
+            messages.error(request, "Only passengers can book trips.")
+            return redirect('trips:index')
+        trip = get_object_or_404(Trip, slug=slug)
 
-        try:
-            trip = Trip.objects.get(name=name)
-        except Trip.DoesNotExist:
-            return Response({"error": "Trip not found"}, status=404)
+        if request.user in trip.passengers.all():
+            messages.warning(request, "You have already booked this trip.")
+            return redirect('trips:index')
+        
+        if trip.created_by == request.user:
+            messages.warning(request, "You cannot book your own trip.")
+            return redirect('trips:index')
+        if trip.passengers.count() >= trip.available_seats:
+            messages.warning(request, "This trip is already fully booked.")
+            return redirect('trips:index')
 
         trip.passengers.add(request.user)
-
-        return Response(TripSerializer(trip).data)
+        messages.success(request, "Trip booked successfully!")
+        return redirect('trips:index')
 
 class ListTripsView(APIView):
     permission_classes = [IsAuthenticated]
@@ -69,8 +80,8 @@ class TripDetailView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [TemplateHTMLRenderer]
 
-    def get(self, request, username):
-        trips = Trip.objects.filter(created_by__username=username)
-        route = TripNode.objects.filter(trip__created_by__username=username).order_by('order')
+    def get(self, request, slug):
+        trip = get_object_or_404(Trip, slug=slug)
+        route = TripNode.objects.filter(trip=trip).order_by('order')
 
-        return Response({'trips': trips, 'route': route}, template_name='trips/trip_detail.html')
+        return Response({'trip': trip, 'route': route}, template_name='trips/trip_detail.html')
