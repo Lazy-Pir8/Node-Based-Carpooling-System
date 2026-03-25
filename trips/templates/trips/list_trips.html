@@ -105,7 +105,7 @@ h1{
 
         <div class="ride-header">
             Driver:
-            <a href="{% url 'users:profile' username=tr.created_by.username %}">
+            <a href="{% url 'users:dashboard' username=tr.created_by.username %}">
                 {{ tr.created_by.username }}
             </a>
         </div>

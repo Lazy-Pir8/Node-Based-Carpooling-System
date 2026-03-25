@@ -17,6 +17,8 @@ from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 # Create your views here.
@@ -72,28 +74,16 @@ def register_view(request):
     return render(request, 'users/register.html', {'form': form})
 
 
-def profile_view(request, username):
-    user = User.objects.get(username=username)
-    trips = Trip.objects.filter(created_by__username=username)
 
-    return render(request, 'users/profile_driver.html', {"profile_user": user, "trips": trips,})
-
-class ProfileView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, username):
-        user = User.objects.get(username=username)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-
-def driver_dashboard(request):
-    if request.user.role != 'driver':
-        messages.error(request, "Only drivers can access the dashboard.")
+def driver_dashboard(request, username):
+    user = User.objects.filter(username=username).first()
+    if not user or user.role != 'driver':
+        messages.error(request, "Driver not found.")
         return redirect('trips:index')
-    trips = Trip.objects.filter(created_by=request.user)
+    trips = Trip.objects.filter(created_by=user)
   
     return render(request, 'users/driver_dashboard.html',{
-    "profile_user": request.user, 
+    "profile_user": user, 
     "trips": trips
     })
 
@@ -108,11 +98,12 @@ def passenger_dashboard(request):
     "trips": trips
     })
 
-def dashboard_redirect(request):
+def dashboard_redirect(request, username):
+    user = User.objects.filter(username=username).first()
     if not request.user.is_authenticated:
         return redirect('users:login')
-    if request.user.role == 'driver':
-        return redirect('users:driver_dashboard')
+    if request.user.role == 'driver' or user.role == 'driver':
+        return redirect('users:driver_dashboard' , username=user.username)
     elif request.user.role == 'passenger':
         return redirect('users:passenger_dashboard')
     else:

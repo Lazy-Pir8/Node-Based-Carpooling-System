@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.shortcuts import redirect
-
+from .forms import TripForm
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -41,6 +41,28 @@ class TripViewSet(viewsets.ModelViewSet):
             for i, node in enumerate(route)
         ])
 
+def create_trip(request):
+    if request.user.role != 'driver':
+        messages.error(request, "Only drivers can create trips.")
+        return redirect('trips:index')
+    if request.method == 'POST':
+        form = TripForm(request.POST)
+        if form.is_valid():
+            trip = form.save(commit=False)
+            trip.created_by = request.user
+            trip.save()
+            
+            route = bfs_path(trip.start_node, trip.end_node)
+            TripNode.objects.bulk_create([
+                TripNode(trip=trip, node=node, order=i)
+                for i, node in enumerate(route)
+            ])
+
+            messages.success(request, "Trip created successfully!")
+            return redirect('trips:index')
+    else:
+        form = TripForm()
+    return render(request, 'trips/create_trip.html', {'form': form})
 class BookTripView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, slug):
