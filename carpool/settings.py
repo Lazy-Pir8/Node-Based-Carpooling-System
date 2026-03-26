@@ -28,8 +28,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # The secret key
 SECRET_KEY = os.environ.get("SECRET_KEY")
  
-# DEBUG = os.getenv("DEBUG", "False") == "1"
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "0.0.0.0").split(",")
 
 # Manual Added Settings
