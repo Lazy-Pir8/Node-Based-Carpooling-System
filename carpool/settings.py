@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
  
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "0.0.0.0").split(",")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "0.0.0.0").split(",")
 
 # Manual Added Settings
 AUTH_USER_MODEL = 'users.User'
