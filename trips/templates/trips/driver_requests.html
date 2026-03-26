@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Incoming Requests</title>
+
+```
+<style>
+    body {
+        font-family: Arial;
+        background: #f4f6f9;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+    }
+
+
+    h1 {
+        text-align: center;
+    }
+
+    .request-card {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        background: #f9fafc;
+    }
+
+    .request-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 6px 10px;
+        margin-top: 10px;
+        background: black;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .empty {
+        text-align: center;
+        color: gray;
+    }
+</style>
+```
+
+</head>
+
+<body>
+<div class="container">
+
+```
+<h1>Requests for "{{ trip.name }}"</h1>
+
+<p>
+    <strong>Route:</strong> {{ trip.start_node }} → {{ trip.end_node }}
+</p>
+
+<hr>
+
+{% for req in requests %}
+    <div class="request-card">
+
+        <div class="request-title">
+            Passenger: {{ req.passenger.username }}
+        </div>
+
+        <p>
+            <strong>Pickup:</strong> {{ req.pickup_node }} <br>
+            <strong>Destination:</strong> {{ req.destination_node }} <br>
+            <strong>Status:</strong> {{ req.status }}
+        </p>
+
+        {% for offer in req.offers.all %}
+            {% if offer.driver == request.user %}
+                <p>
+                    <strong>Your Offer:</strong><br>
+                    Detour: {{ offer.detour }} nodes <br>
+                    Fare: ₹{{ offer.fare }}
+                </p>
+            {% endif %}
+        {% endfor %}
+
+        {% if not req.has_offered %}
+            <a href="{% url 'trips:create_offer' req.id trip.id %}" class="btn">
+                Offer Ride
+            </a>
+        {% else %}
+            <p><em>You already offered</em></p>
+        {% endif %}
+
+    </div>
+
+{% empty %}
+    <p class="empty">No incoming requests.</p>
+{% endfor %}
+
+<a href="{% url 'users:driver_dashboard' trip.created_by.username %}" class="btn">
+    Back to Dashboard
+</a>
+```
+
+</div>
+</body>
+
+</html>

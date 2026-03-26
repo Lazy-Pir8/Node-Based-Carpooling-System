@@ -58,6 +58,8 @@
 
     <p><strong>Role:</strong> {{ profile_user.role }}</p>
     <p><strong>Email:</strong> {{ profile_user.email }}</p>
+    <a href="{% url 'trips:list_trips' %}">Browse Trips</a>
+    <a href="{% url 'trips:create_request' %}">Request Ride</a>
 
     <h3>Your Booked Trips</h3>
 
@@ -79,6 +81,29 @@
     {% endfor %}
 
     <a href="{% url 'trips:index' %}" class="back-btn">Go Back</a>
+
+    <h3>Your Carpool Requests</h3>
+    
+    {% for req in requests %}
+        <div class="trip-card">
+            <p>
+                <strong>From:</strong> {{ req.pickup_node }} <br>
+                <strong>To:</strong> {{ req.destination_node }} <br>
+                <strong>Status:</strong> {{ req.status }}
+            </p>
+            <strong>Offers:</strong> {{ req.offers.count }} <br>
+
+            {% if req.offers.count > 0 %}
+                <a href="{% url 'trips:request_offers' req.id %}">
+                    View Offers
+                </a>
+            {% else %}
+                <p><em>Waiting for drivers...</em></p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No requests yet.</p>
+    {% endfor %}
 
 </div>
 </body>

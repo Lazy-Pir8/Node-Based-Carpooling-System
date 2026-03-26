@@ -17,7 +17,7 @@ class Trip(models.Model):
         'network.Node', related_name='end_node', on_delete=models.CASCADE
     )
     
-  
+    id = models.AutoField(primary_key=True)
     departure_time = models.DateTimeField()
     available_seats = models.IntegerField()
     arrival_time = models.DateTimeField(null=True, blank=True)
@@ -42,3 +42,30 @@ class TripNode(models.Model):
 
     def __str__(self):
         return f"{self.trip.id} - {self.node.point} (Order: {self.order})"
+
+class CarpoolRequest(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('matched', 'Matched'),
+        ('cancelled', 'Cancelled'),
+    )
+
+    passenger = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    pickup_node = models.ForeignKey('network.Node', related_name='pickup_requests', on_delete=models.CASCADE)
+    destination_node = models.ForeignKey('network.Node', related_name='destination_requests', on_delete=models.CASCADE)
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class DriverOffer(models.Model):
+    request = models.ForeignKey(CarpoolRequest, related_name='offers', on_delete=models.CASCADE)
+    driver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    
+    trip = models.ForeignKey('trips.Trip', on_delete=models.CASCADE)
+
+    detour_distance = models.FloatField(default=0)   
+    fare = models.DecimalField(max_digits=10, decimal_places=2)
+
+    is_selected = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    detour = models.IntegerField(default=0)  

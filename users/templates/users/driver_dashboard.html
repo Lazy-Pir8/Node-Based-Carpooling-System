@@ -116,7 +116,6 @@
             {% for trip in trips %}
                 <li class="trip-card">
                     <div class="trip-title">{{ trip.name }}</div>
-                
                     <div class="trip-details">
                         <strong>From:</strong> {{ trip.start_node }} <br>
                         <strong>To:</strong> {{ trip.end_node }} <br>
@@ -125,6 +124,10 @@
                         <strong>Seats:</strong> {{ trip.passengers.count }}/{{ trip.available_seats }} <br>
                         <strong>Price:</strong> ₹{{ trip.ticket_price }}
                     </div>
+                    <a href="{% url 'trips:driver_requests' trip.id %}" class="btn">
+                        View Requests
+                    </a>
+                
                 </li>
             
             {% empty %}

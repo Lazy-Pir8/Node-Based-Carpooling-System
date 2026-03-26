@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Offers</title>
+
+```
+<style>
+    body {
+        font-family: Arial;
+        background: #f4f6f9;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 40px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .offer-card {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        background: #f9fafc;
+    }
+
+    .offer-title {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 6px 10px;
+        margin-top: 10px;
+        background: black;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .btn-danger {
+        background: red;
+    }
+
+    .empty {
+        text-align: center;
+        color: gray;
+    }
+</style>
+```
+
+</head>
+
+<body>
+<div class="container">
+
+```
+<h1>Ride Offers</h1>
+
+<p>
+    <strong>Pickup:</strong> {{ request.pickup_node }} <br>
+    <strong>Destination:</strong> {{ request.destination_node }} <br>
+    <strong>Status:</strong> {{ request.status }}
+</p>
+
+<hr>
+
+{% for offer in offers %}
+    <div class="offer-card">
+
+        <div class="offer-title">
+            Driver: {{ offer.driver.username }}
+        </div>
+
+        <p>
+            <strong>Trip:</strong> {{ offer.trip.name }} <br>
+            <strong>Detour:</strong> {{ offer.detour }} nodes <br>
+            <strong>Fare:</strong> ₹{{ offer.fare }}
+        </p>
+
+        {% if request.status == "pending" %}
+            <a href="{% url 'trips:offer_accept' offer.id %}" class="btn">
+                Accept Offer
+            </a>
+        {% endif %}
+
+    </div>
+
+{% empty %}
+    <p class="empty">No offers available yet.</p>
+{% endfor %}
+
+<a href="{% url 'users:passenger_dashboard' %}" class="btn">Back</a>
+```
+
+</div>
+</body>
+
+</html>

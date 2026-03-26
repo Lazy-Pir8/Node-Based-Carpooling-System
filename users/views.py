@@ -19,7 +19,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
+from trips.models import CarpoolRequest
 
 # Create your views here.
 
@@ -92,10 +92,12 @@ def passenger_dashboard(request):
         messages.error(request, "Only passengers can access the dashboard.")
         return redirect('trips:index')
     trips = request.user.booked_trips.all()
+    requests = CarpoolRequest.objects.filter(passenger=request.user)
   
     return render(request, 'users/passenger_dashboard.html',{
     "profile_user": request.user, 
-    "trips": trips
+    "trips": trips,
+    "requests": requests
     })
 
 def dashboard_redirect(request, username):
