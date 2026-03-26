@@ -27,7 +27,7 @@ FROM python:3.13-slim
 RUN useradd -m -r appuser && \
     mkdir -p /app/staticfiles && \
     chown -R appuser:appuser /app
-    
+
 # Copy the Python dependencies from the builder stage
 COPY --from=builder /usr/local/lib/python3.13/site-packages/ /usr/local/lib/python3.13/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
@@ -53,4 +53,4 @@ EXPOSE 8000
  
 # Start the application using Gunicorn
 # CMD ["sh", "-c", "/wait_for_db.sh && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8000 --workers 3 carpool.wsgi:application"]
-CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8000 --workers 3 carpool.wsgi:application"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8000 --workers 1 carpool.wsgi:application"]
