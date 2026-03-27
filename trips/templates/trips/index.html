@@ -178,8 +178,13 @@
     <div class="hero-content">
         <h2>Share Rides. Save Money. Reduce Traffic.</h2>
         <p>Connect with drivers and passengers traveling along the same route. Smart matching powered by a node-based road network.</p>
-        <button class="btn btn-primary">Find a Ride</button>
-        <button class="btn btn-secondary">Offer a Ride</button>
+        <a href="{% url 'trips:list_trips' %}" class="btn btn-primary">
+            Find a Ride
+        </a>
+
+        <a href="{% url 'trips:create_trip' %}" class="btn btn-secondary">
+            Offer a Ride
+        </a>
     </div>
 </section>
 

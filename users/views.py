@@ -55,6 +55,7 @@ class RegisterView(View):
             user = form.save()
             user.set_password(form.cleaned_data['password'])
             user.save()
+            login(request, user)
             return redirect('trips:index')
         return render(request, 'users/register.html', {'form': form})
 
@@ -66,7 +67,7 @@ def register_view(request):
             user = form.save()
             user.set_password(form.cleaned_data['password'])
             user.save()
-
+            login(request, user)
             return redirect('trips:index')
     else:
         form = RegisterForm()
