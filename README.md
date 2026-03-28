@@ -1,4 +1,3 @@
-Here is the complete content in raw Markdown format, ready to be copied and pasted directly into your GitHub `README.md` file.
 
 ```markdown
 # Node-Based Carpooling System
@@ -52,7 +51,7 @@ Check it out here: [http://51.20.34.28/](http://51.20.34.28/)
 
 ## Admin Panel
 
-* **URL:** `http://YOUR_PUBLIC_IP/admin`
+* **URL:** `http://whateverIp/admin`
 * **Note:** A dedicated admin page hasn't been created yet, so the project uses the default Django administration for now.
 * **Access:** Use the superuser credentials created during the setup steps.
 
@@ -85,5 +84,3 @@ Node-Based-Carpooling-System/
 ```
 
 ---
-
-Would you like me to generate a specific list of environment variables for your `.env` section to make the setup instructions even clearer?
