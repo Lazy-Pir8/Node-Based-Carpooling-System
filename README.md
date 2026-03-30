@@ -54,6 +54,8 @@ Check it out here: [http://51.20.34.28/](http://51.20.34.28/)
 * **URL:** `http://whateverIp/admin`
 * **Note:** A dedicated admin page hasn't been created yet, so the project uses the default Django administration for now.
 * **Access:** Use the superuser credentials created during the setup steps.
+username - admin
+pass - admin@123
 
 ## Project Structure
 
