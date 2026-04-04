@@ -20,3 +20,4 @@ class TripSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['created_by']
 
+

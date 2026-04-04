@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import status, viewsets, permissions
 from rest_framework.exceptions import PermissionDenied
 from network.graph_utils import bfs_path
 from .models import Trip, TripNode
@@ -18,32 +18,47 @@ from .models import CarpoolRequest, DriverOffer
 from network.models import Node
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-
+from django.utils.timezone import now
+from rest_framework.decorators import action
 
 class IndexView(View):
     def get(self, request):
         return render(request, 'trips/index.html')
 
+def compute_current_node(trip):
+    nodes = list(TripNode.objects.filter(trip=trip).order_by('order'))
+    total_nodes = len(nodes)
+    current_time = now()
 
-class TripViewSet(viewsets.ModelViewSet):
-    queryset = Trip.objects.all()
-    serializer_class = TripSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    if total_nodes == 0:
+        return None
+    if current_time >= trip.arrival_time:
+        return nodes[-1].node
+    if current_time >= trip.departure_time and current_time < trip.arrival_time:
+        elapsed = (current_time - trip.departure_time).total_seconds()
+        total_duration = (trip.arrival_time - trip.departure_time).total_seconds()
+        time_per_node = total_duration / total_nodes
+        current_index = int(elapsed / time_per_node)
+        current_index = min(current_index, total_nodes - 1)
+        return nodes[current_index].node
+    if current_time < trip.departure_time:
+        return nodes[0].node
 
-    def perform_create(self, serializer):
-        user = self.request.user
 
-        if user.role != 'driver':
-            raise PermissionDenied("Only drivers can create trips.")
 
-        trip = serializer.save(created_by=user)
 
-        route = bfs_path(trip.start_node, trip.end_node)
 
-        TripNode.objects.bulk_create([
-            TripNode(trip=trip, node=node, order=i)
-            for i, node in enumerate(route)
-        ])
+def delete_past_trips(request):
+    current_time = now()
+    past_trips = Trip.objects.filter(arrival_time__lt=current_time)
+    count = past_trips.count()
+    past_trips.delete()
+    return Response(
+        {'message': f'{count} past trip(s) deleted.'}, 
+        status=status.HTTP_200_OK
+    )
+
+
 
 def create_trip(request):
     if request.user.role != 'driver':
@@ -54,6 +69,7 @@ def create_trip(request):
         if form.is_valid():
             trip = form.save(commit=False)
             trip.created_by = request.user
+            trip.current_node = trip.start_node
             trip.save()
             
             route = bfs_path(trip.start_node, trip.end_node)
@@ -96,12 +112,13 @@ class ListTripsView(APIView):
 
     def get(self, request):
         trips = Trip.objects.all()
+        delete_past_trips(request)
         return Response(
         {'trips': trips},
         template_name='trips/list_trips.html'
     )
 
-
+# Fix the Current Node Display in Trip Detail View
 class TripDetailView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [TemplateHTMLRenderer]
@@ -109,8 +126,8 @@ class TripDetailView(APIView):
     def get(self, request, slug):
         trip = get_object_or_404(Trip, slug=slug)
         route = TripNode.objects.filter(trip=trip).order_by('order')
-
-        return Response({'trip': trip, 'route': route}, template_name='trips/trip_detail.html')
+        current_node = compute_current_node(trip)
+        return Response({'trip': trip, 'route': route, 'current_node': current_node}, template_name='trips/trip_detail.html')
 
 def is_within_n_nodes(route_nodes, target_node, max_distance=2):
     for route_node in route_nodes:
@@ -242,6 +259,7 @@ def create_offer(request, request_id, trip_id):
     path1 = bfs_path(trip.start_node, req.pickup_node)
     path2 = bfs_path(req.pickup_node, req.destination_node)
     path3 = bfs_path(req.destination_node, trip.end_node)
+
 
     if not path1 or not path2 or not path3:
         messages.error(request, "Cannot compute route.")

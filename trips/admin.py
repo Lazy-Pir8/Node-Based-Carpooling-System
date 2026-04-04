@@ -6,3 +6,8 @@ from .models import Trip
 class TripAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_node', 'end_node', 'ticket_price', 'departure_time', 'available_seats',)
     search_fields = ('name', 'start_node__point', 'end_node__point', )
+"""
+@admin.register(CarpoolServiceStatus)
+class CarpoolServiceStatusAdmin(admin.ModelAdmin):
+    list_display = ['is_active']
+"""
