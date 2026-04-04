@@ -44,6 +44,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - static_volume:/app/staticfiles
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - django-web
       
