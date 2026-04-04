@@ -31,6 +31,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
+CSRF_TRUSTED_ORIGINS = [
+    "https://pir8lab.me",
+    "https://www.pir8lab.me",
+]
 
 # Manual Added Settings
 AUTH_USER_MODEL = 'users.User'
