@@ -6,7 +6,7 @@ A web application for carpooling built with Django, Docker, PostgreSQL, and Ngin
 
 ## Live Site
 
-Check it out here: [http://51.20.34.28/](http://51.20.34.28/)
+Check it out here: https://pir8lab.me
 
 ## Features
 
@@ -68,13 +68,55 @@ Node-Based-Carpooling-System/
 ├─ Dockerfile
 ├─ docker-compose.yml
 └─ .env                  # Environment variables (not pushed!)
-```
 
+```
+```
 ## Deployment
 
 * Hosted on **AWS EC2** using Docker and Nginx.
-* Exposed via public IP (Direct IP access; no domain name assigned yet).
-* **Protocol:** HTTP (HTTPS is not yet enabled).
+* Connected to a custom domain: **https://pir8lab.me**
+* **HTTPS enabled** using Let's Encrypt (Certbot).
+* Reverse proxy handled by Nginx.
+* Application served via Gunicorn inside Docker containers.
+
+### CI/CD
+
+* Automated deployment using GitHub Actions.
+* On every push to `main`:
+  - Code is pulled on the EC2 instance
+  - Containers are rebuilt
+  - Database migrations are applied
+  - Application is restarted
+
+### SSL Setup
+
+* SSL certificates generated using Certbot.
+* Certificates mounted into Docker Nginx container.
+* HTTP traffic automatically redirected to HTTPS.
+
+## Continuous Deployment
+
+The project uses GitHub Actions for automated deployment.
+
+### Workflow
+
+1. Push changes to `main` branch
+2. GitHub Actions connects to EC2 via SSH
+3. Runs:
+   ```bash
+   git pull
+   docker-compose up --build -d
+   docker-compose exec django-web python manage.py migrate
+-  Location - Workflow File
+.github/workflows/deploy.yml
+
+## Architecture
+
+* Nginx handles incoming HTTP/HTTPS requests
+* Django processes business logic
+* PostgreSQL stores persistent data
+* Docker manages containerized services
+
 
 ## Notes
 
