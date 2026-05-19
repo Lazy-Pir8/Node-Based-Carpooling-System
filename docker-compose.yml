@@ -44,11 +44,12 @@ services:
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/staticfiles
-      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - django-web
       
 volumes:
    postgres_data:
    static_volume:
+  

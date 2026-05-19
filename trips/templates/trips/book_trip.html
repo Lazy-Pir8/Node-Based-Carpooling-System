@@ -8,114 +8,284 @@
 
 <style>
 
-/* ===== BODY ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
 body{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background:linear-gradient(135deg,#f8fafc,#eef2f7);
-    margin:40px;
+    min-height:100vh;
+
+    background:
+        radial-gradient(circle at top left, rgba(99,102,241,0.22), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(59,130,246,0.18), transparent 30%),
+        #0f172a;
+
+    color:white;
+    padding:50px 25px;
 }
 
-/* ===== TITLE ===== */
-h1{
-    text-align:center;
-    margin-bottom:35px;
-    font-weight:600;
-    color:#1f2937;
+/* ===== PAGE TITLE ===== */
+
+.page-header{
+    max-width:1200px;
+    margin:auto;
+    margin-bottom:50px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
-/* ===== GRID CONTAINER ===== */
+.page-title h1{
+    font-size:52px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.page-title span{
+    background:linear-gradient(to right,#60a5fa,#a78bfa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.page-title p{
+    color:#94a3b8;
+    font-size:17px;
+}
+
+/* ===== BACK BUTTON ===== */
+
+.back-btn{
+    text-decoration:none;
+    color:white;
+
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+
+    padding:12px 20px;
+    border-radius:14px;
+
+    backdrop-filter:blur(10px);
+
+    transition:0.3s ease;
+}
+
+.back-btn:hover{
+    transform:translateY(-3px);
+    background:rgba(255,255,255,0.12);
+}
+
+/* ===== GRID ===== */
+
 .ride-list{
     max-width:1200px;
     margin:auto;
 
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:28px;
 }
 
 /* ===== CARD ===== */
+
 .ride{
-    background:#ffffff;
-    border-radius:14px;
-    padding:20px;
-    border:1px solid #e5e7eb;
+    position:relative;
+    overflow:hidden;
+
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:24px;
+    padding:28px;
 
     display:flex;
     flex-direction:column;
     justify-content:space-between;
 
-    transition:all .25s ease;
+    transition:all .35s ease;
+}
+
+.ride::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,0.08),
+        transparent
+    );
+
+    opacity:0;
+    transition:0.3s;
+}
+
+.ride:hover::before{
+    opacity:1;
 }
 
 .ride:hover{
-    transform:translateY(-4px);
-    box-shadow:0 10px 22px rgba(0,0,0,0.08);
+    transform:translateY(-10px);
+    border-color:rgba(96,165,250,0.35);
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.35),
+        0 0 25px rgba(59,130,246,0.15);
 }
 
-/* ===== TOP SECTION ===== */
+/* ===== TOP HEADER ===== */
+
 .ride-header{
-    font-size:17px;
-    font-weight:600;
-    color:#111827;
+    font-size:22px;
+    font-weight:700;
     margin-bottom:10px;
+}
+
+/* ===== DRIVER ===== */
+
+.driver{
+    margin-bottom:18px;
+    color:#cbd5e1;
+    font-size:15px;
+}
+
+.driver a{
+    color:#60a5fa;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.driver a:hover{
+    color:#93c5fd;
 }
 
 /* ===== ROUTE ===== */
+
 .route{
-    font-size:14px;
-    color:#374151;
-    margin-bottom:10px;
+    position:relative;
+
+    padding:16px;
+    margin-bottom:20px;
+
+    border-radius:16px;
+
+    background:rgba(15,23,42,0.65);
+    border:1px solid rgba(255,255,255,0.06);
+
+    color:#e2e8f0;
+    font-size:15px;
+    line-height:1.7;
 }
 
 /* ===== TIME ===== */
+
 .time{
-    font-size:13px;
-    color:#6b7280;
-    margin-bottom:12px;
+    color:#94a3b8;
+    font-size:14px;
+    margin-bottom:20px;
 }
 
-/* ===== BOTTOM ROW ===== */
+/* ===== FOOTER ===== */
+
 .ride-footer{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-bottom:22px;
 }
 
 /* ===== PRICE ===== */
+
 .price{
-    color:#059669;
+    font-size:26px;
+    font-weight:800;
+
+    background:linear-gradient(to right,#34d399,#10b981);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* ===== SEATS ===== */
+
+.seats{
+    background:rgba(245,158,11,0.12);
+    color:#fbbf24;
+
+    border:1px solid rgba(245,158,11,0.18);
+
+    padding:8px 14px;
+    border-radius:999px;
+
+    font-size:13px;
     font-weight:600;
 }
 
-/* ===== SEATS (circle badge) ===== */
-.seats{
-    background:#fef3c7;
-    color:#92400e;
-    font-size:12px;
-    padding:6px 10px;
-    border-radius:20px;
-    font-weight:500;
-}
-
 /* ===== BUTTON ===== */
+
 .book-btn{
-    margin-top:15px;
     width:100%;
-
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    color:white;
     border:none;
-    padding:10px;
-    border-radius:8px;
     cursor:pointer;
-    font-weight:500;
 
-    transition:.2s;
+    padding:14px;
+    border-radius:14px;
+
+    font-size:15px;
+    font-weight:700;
+    color:white;
+
+    background:linear-gradient(135deg,#3b82f6,#6366f1);
+
+    transition:all .3s ease;
+
+    box-shadow:0 10px 20px rgba(59,130,246,0.25);
 }
 
 .book-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 6px 14px rgba(37,99,235,0.35);
+    transform:translateY(-3px) scale(1.01);
+
+    box-shadow:
+        0 16px 30px rgba(59,130,246,0.35),
+        0 0 18px rgba(99,102,241,0.25);
+}
+
+/* ===== EMPTY STATE ===== */
+
+.empty-state{
+    text-align:center;
+    margin-top:100px;
+    color:#94a3b8;
+}
+
+.empty-state h2{
+    font-size:36px;
+    margin-bottom:10px;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:768px){
+
+    body{
+        padding:30px 18px;
+    }
+
+    .page-title h1{
+        font-size:38px;
+    }
+
+    .ride{
+        padding:22px;
+    }
 }
 
 </style>
@@ -123,7 +293,18 @@ h1{
 
 <body>
 
-<h1>Available Rides</h1>
+<div class="page-header">
+
+    <div class="page-title">
+        <h1>Available <span>Rides</span></h1>
+        <p>Find rides traveling along your route and book instantly.</p>
+    </div>
+
+    <a href="{% url 'trips:index' %}" class="back-btn">
+        ← Go Back
+    </a>
+
+</div>
 
 <div class="ride-list">
 
@@ -136,41 +317,54 @@ h1{
         <div class="ride-header">
             {{ tr.name|capfirst }}
         </div>
-        <div class="ride-header">
-            Driver: <a href="{% url 'users:profile' username=tr.created_by.username %}">{{ tr.created_by.username|capfirst }}</a>
+
+        <div class="driver">
+            Driver:
+            <a href="{% url 'users:profile' username=tr.created_by.username %}">
+                {{ tr.created_by.username|capfirst }}
+            </a>
         </div>
 
         <div class="route">
-            {{ tr.start_node.point|capfirst }} → {{ tr.end_node.point|capfirst }}
+            📍 {{ tr.start_node.point|capfirst }}
+            <br><br>
+            ⟶
+            <br><br>
+            📍 {{ tr.end_node.point|capfirst }}
         </div>
 
         <div class="time">
-            {{ tr.departure_time }} – {{ tr.arrival_time }}
+            🕒 {{ tr.departure_time }} — {{ tr.arrival_time }}
         </div>
 
         <div class="ride-footer">
             <span class="price">₹{{ tr.ticket_price }}</span>
-            <span class="seats">{{ tr.available_seats }} seats</span>
+
+            <span class="seats">
+                {{ tr.available_seats }} seats left
+            </span>
         </div>
 
     </div>
 
-    <div>
-        <a href="{% url 'trips:trip_detail' slug=tr.slug %}">
-            <button class="book-btn">View / Book</button>
-        </a>
-    </div>
-
+    <a href="{% url 'trips:trip_detail' slug=tr.slug %}">
+        <button class="book-btn">
+            View / Book Ride
+        </button>
+    </a>
 
 </div>
 
+{% empty %}
+
+<div class="empty-state">
+    <h2>No rides found</h2>
+    <p>Looks like nobody is driving this route yet.</p>
+</div>
 
 {% endfor %}
 
 </div>
-    <a href="{% url 'trips:index' %}">
-    <Button>Go Back</Button>
-   </a>
 
 </body>
 </html>

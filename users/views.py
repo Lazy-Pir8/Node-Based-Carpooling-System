@@ -20,8 +20,9 @@ from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from trips.models import CarpoolRequest
+from allauth.account.signals import user_signed_up
+from django.dispatch import receiver
 
-# Create your views here.
 
 def login_view(request):
     if request.method == 'POST':

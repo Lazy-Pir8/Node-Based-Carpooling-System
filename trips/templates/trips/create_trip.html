@@ -6,127 +6,329 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            margin: 0;
-            padding: 0;
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',sans-serif;
         }
 
-        header {
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            text-align: center;
+        body{
+            min-height:100vh;
+
+            background:
+                radial-gradient(circle at top left, rgba(99,102,241,0.22), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(59,130,246,0.18), transparent 30%),
+                #0f172a;
+
+            color:white;
+            padding:40px 20px;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 30px auto;
+        /* ===== HEADER ===== */
+
+        .page-header{
+            max-width:1100px;
+            margin:auto;
+            margin-bottom:45px;
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:20px;
         }
 
-        .search-box {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
+        .header-text h1{
+            font-size:56px;
+            font-weight:800;
+            margin-bottom:10px;
         }
 
-        .search-box h2 {
-            margin-top: 0;
+        .header-text span{
+            background:linear-gradient(to right,#60a5fa,#a78bfa);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
         }
 
-        .form-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
+        .header-text p{
+            color:#94a3b8;
+            font-size:17px;
         }
 
-        .form-group input,
-        .form-group select {
-            flex: 1;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+        /* ===== BACK BUTTON ===== */
+
+        .back-btn{
+            text-decoration:none;
+            color:white;
+
+            padding:12px 20px;
+            border-radius:14px;
+
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.08);
+
+            backdrop-filter:blur(10px);
+
+            transition:0.3s ease;
         }
 
-        .btn {
-            padding: 10px 20px;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
+        .back-btn:hover{
+            transform:translateY(-3px);
+            background:rgba(255,255,255,0.12);
         }
 
-        .btn:hover {
-            background: #2980b9;
+        /* ===== CONTAINER ===== */
+
+        .container{
+            width:100%;
+            max-width:1100px;
+            margin:auto;
         }
 
-        .trip-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* ===== GLASS CARD ===== */
+
+        .search-box{
+            position:relative;
+            overflow:hidden;
+
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.08);
+
+            backdrop-filter:blur(18px);
+
+            border-radius:28px;
+            padding:40px;
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,0.35);
         }
 
-        .trip-info h3 {
-            margin: 0 0 5px 0;
+        .search-box::before{
+            content:"";
+            position:absolute;
+            inset:0;
+
+            background:linear-gradient(
+                135deg,
+                rgba(255,255,255,0.08),
+                transparent
+            );
+
+            pointer-events:none;
         }
 
-        .trip-info p {
-            margin: 3px 0;
-            color: #555;
+        .search-box h2{
+            font-size:32px;
+            margin-bottom:30px;
+            font-weight:700;
         }
 
-        .book-btn {
-            background: #27ae60;
+        /* ===== FORM ===== */
+
+        form{
+            width:100%;
         }
 
-        .book-btn:hover {
-            background: #1e8449;
+        form p{
+            margin-bottom:24px;
         }
 
-        @media(max-width: 768px) {
-            .trip-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
+        label{
+            display:block;
+            margin-bottom:10px;
+
+            color:#e2e8f0;
+            font-weight:600;
+            font-size:15px;
+        }
+
+        input,
+        select,
+        textarea{
+            width:100%;
+
+            background:rgba(15,23,42,0.8);
+            color:white;
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            padding:15px 16px;
+            border-radius:14px;
+
+            font-size:15px;
+
+            outline:none;
+            transition:0.3s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus{
+            border-color:#60a5fa;
+
+            box-shadow:
+                0 0 0 4px rgba(96,165,250,0.15);
+        }
+
+        option{
+            background:#111827;
+            color:white;
+        }
+
+        /* ===== BUTTON ROW ===== */
+
+        .button-group{
+            margin-top:30px;
+
+            display:flex;
+            gap:16px;
+            flex-wrap:wrap;
+        }
+
+        /* ===== PRIMARY BUTTON ===== */
+
+        .btn{
+            border:none;
+            cursor:pointer;
+
+            padding:15px 26px;
+            border-radius:16px;
+
+            font-size:15px;
+            font-weight:700;
+
+            transition:all 0.3s ease;
+        }
+
+        .submit-btn{
+            color:white;
+
+            background:linear-gradient(135deg,#3b82f6,#6366f1);
+
+            box-shadow:
+                0 12px 24px rgba(59,130,246,0.28);
+        }
+
+        .submit-btn:hover{
+            transform:translateY(-4px);
+
+            box-shadow:
+                0 18px 35px rgba(59,130,246,0.35),
+                0 0 20px rgba(99,102,241,0.25);
+        }
+
+        /* ===== SECONDARY BUTTON ===== */
+
+        .secondary-btn{
+            text-decoration:none;
+            color:white;
+
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.08);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .secondary-btn:hover{
+            transform:translateY(-3px);
+            background:rgba(255,255,255,0.12);
+        }
+
+        /* ===== MOBILE ===== */
+
+        @media(max-width:768px){
+
+            body{
+                padding:30px 16px;
+            }
+
+            .header-text h1{
+                font-size:40px;
+            }
+
+            .search-box{
+                padding:28px;
+            }
+
+            .button-group{
+                flex-direction:column;
+            }
+
+            .btn,
+            .secondary-btn{
+                width:100%;
+                text-align:center;
             }
         }
+
     </style>
 </head>
+
 <body>
 
-<header>
-    <h1>Book a Trip</h1>
-</header>
+    <!-- ===== HEADER ===== -->
 
-<div class="container">
+    <div class="page-header">
 
-    <!-- Search Section -->
-    <div class="search-box">
-        <h2>Search Trips</h2>
-        <form id="searchForm" action="{% url 'trips:create_trip' %}" method="POST">
-            <div class="form-group">
-                
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn">Submit</button>
-                
-            </div>
-        </form>
-        <a href="{% url 'trips:index' %}">
-        <Button>Go Back</Button>
+        <div class="header-text">
+            <h1>Book a <span>Trip</span></h1>
+
+            <p>
+                Search available routes and connect with nearby drivers instantly.
+            </p>
+        </div>
+
+        <a href="{% url 'trips:index' %}" class="back-btn">
+            ← Back Home
         </a>
 
-</div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+
+    <div class="container">
+
+        <div class="search-box">
+
+            <h2>Search Trips</h2>
+
+            <form id="searchForm"
+                  action="{% url 'trips:create_trip' %}"
+                  method="POST">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <div class="button-group">
+
+                    <button type="submit"
+                            class="btn submit-btn">
+
+                        Find Available Trips
+
+                    </button>
+
+                    <a href="{% url 'trips:index' %}"
+                       class="btn secondary-btn">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 </body>
 </html>

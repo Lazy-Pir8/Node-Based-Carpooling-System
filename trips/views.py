@@ -17,9 +17,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from .models import CarpoolRequest, DriverOffer
 from network.models import Node
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
 from django.utils.timezone import now
-from rest_framework.decorators import action
 
 class IndexView(View):
     def get(self, request):

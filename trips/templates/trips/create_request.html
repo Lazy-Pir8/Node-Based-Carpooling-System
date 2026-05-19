@@ -3,31 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create Carpool Request</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            padding:20px;
+
+            background:
+                radial-gradient(circle at top left, rgba(99,102,241,0.22), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(59,130,246,0.18), transparent 30%),
+                #0f172a;
+
+            color:white;
+        }
+
+        .request-container{
+            width:100%;
+            max-width:500px;
+
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.08);
+
+            backdrop-filter:blur(18px);
+
+            padding:40px;
+            border-radius:28px;
+
+            position:relative;
+            overflow:hidden;
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,0.35);
+        }
+
+        .request-container::before{
+            content:"";
+            position:absolute;
+            inset:0;
+
+            background:linear-gradient(
+                135deg,
+                rgba(255,255,255,0.08),
+                transparent
+            );
+
+            opacity:0.7;
+            pointer-events:none;
+        }
+
+        .title{
+            text-align:center;
+            margin-bottom:35px;
+        }
+
+        .title h2{
+            font-size:38px;
+            font-weight:800;
+            margin-bottom:10px;
+        }
+
+        .title span{
+            background:linear-gradient(to right,#60a5fa,#a78bfa);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .title p{
+            color:#94a3b8;
+            font-size:15px;
+            line-height:1.6;
+        }
+
+        form{
+            display:flex;
+            flex-direction:column;
+            gap:24px;
+        }
+
+        .form-group{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+
+        label{
+            font-size:14px;
+            font-weight:600;
+            color:#e2e8f0;
+        }
+
+        select{
+            width:100%;
+
+            background:rgba(15,23,42,0.8);
+            color:white;
+
+            border:1px solid rgba(255,255,255,0.08);
+
+            padding:15px 16px;
+            border-radius:14px;
+
+            font-size:15px;
+
+            outline:none;
+
+            transition:0.3s ease;
+        }
+
+        select:focus{
+            border-color:#60a5fa;
+            box-shadow:0 0 0 4px rgba(96,165,250,0.15);
+        }
+
+        option{
+            background:#111827;
+            color:white;
+        }
+
+        .submit-btn{
+            margin-top:10px;
+
+            border:none;
+            cursor:pointer;
+
+            padding:16px;
+            border-radius:16px;
+
+            font-size:16px;
+            font-weight:700;
+
+            color:white;
+
+            background:linear-gradient(135deg,#3b82f6,#6366f1);
+
+            transition:all 0.3s ease;
+
+            box-shadow:0 12px 24px rgba(59,130,246,0.28);
+        }
+
+        .submit-btn:hover{
+            transform:translateY(-4px);
+
+            box-shadow:
+                0 18px 35px rgba(59,130,246,0.35),
+                0 0 20px rgba(99,102,241,0.25);
+        }
+
+        .back-link{
+            margin-top:25px;
+            text-align:center;
+        }
+
+        .back-link a{
+            color:#94a3b8;
+            text-decoration:none;
+            font-size:14px;
+
+            transition:0.3s;
+        }
+
+        .back-link a:hover{
+            color:white;
+        }
+
+        @media(max-width:600px){
+
+            .request-container{
+                padding:30px 24px;
+            }
+
+            .title h2{
+                font-size:30px;
+            }
+        }
+
+    </style>
+
 </head>
+
 <body>
-    <h2>Create Carpool Request</h2>
 
-    <form method="POST">
-        {% csrf_token %}
+    <div class="request-container">
 
-        <label>Pickup:</label>
-        <select name="pickup">
-            {% for node in nodes %}
-                <option value="{{ node.id }}">{{ node }}</option>
-            {% endfor %}
-        </select>
+        <div class="title">
+            <h2>Create <span>Ride Request</span></h2>
 
-        <label>Destination:</label>
-        <select name="destination">
-            {% for node in nodes %}
-                <option value="{{ node.id }}">{{ node }}</option>
-            {% endfor %}
-        </select>
+            <p>
+                Select your pickup and destination points to
+                find available carpools near your route.
+            </p>
+        </div>
 
-        <button type="submit">Request Ride</button>
-    </form>
+        <form method="POST">
+            {% csrf_token %}
 
-    
+            <div class="form-group">
+                <label>📍 Pickup Location</label>
+
+                <select name="pickup">
+                    {% for node in nodes %}
+                        <option value="{{ node.id }}">
+                            {{ node }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🏁 Destination</label>
+
+                <select name="destination">
+                    {% for node in nodes %}
+                        <option value="{{ node.id }}">
+                            {{ node }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Find Matching Rides
+            </button>
+
+        </form>
+
+        <div class="back-link">
+            <a href="{% url 'trips:index' %}">
+                ← Back to Home
+            </a>
+        </div>
+
+    </div>
+
 </body>
 </html>
