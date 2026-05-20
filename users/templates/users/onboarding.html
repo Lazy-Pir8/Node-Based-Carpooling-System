@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Complete Your Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at top left, rgba(99,102,241,.22), transparent 30%),
+                        radial-gradient(circle at bottom right, rgba(59,130,246,.18), transparent 30%),
+                        #0f172a;
+            color: white; padding: 24px;
+        }
+        .card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.1);
+            backdrop-filter: blur(18px);
+            border-radius: 28px;
+            padding: 48px;
+            width: 100%; max-width: 480px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.4);
+        }
+        h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+        h1 span { background: linear-gradient(to right,#60a5fa,#a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: #94a3b8; margin-bottom: 36px; font-size: 15px; }
+        .messages { margin-bottom: 20px; }
+        .messages li { background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.3); border-radius: 10px; padding: 12px 16px; list-style: none; font-size: 14px; color: #fca5a5; }
+        label { display: block; font-weight: 600; color: #e2e8f0; margin-bottom: 8px; font-size: 14px; }
+        input[type="text"] {
+            width: 100%; background: rgba(15,23,42,.8); color: white;
+            border: 1px solid rgba(255,255,255,.1); padding: 14px 16px;
+            border-radius: 14px; font-size: 15px; outline: none; transition: .3s;
+            margin-bottom: 24px;
+        }
+        input[type="text"]:focus { border-color: #60a5fa; box-shadow: 0 0 0 4px rgba(96,165,250,.15); }
+        .role-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 32px; }
+        .role-card { position: relative; }
+        .role-card input[type="radio"] { display: none; }
+        .role-card label {
+            display: block; padding: 20px; border-radius: 16px; cursor: pointer;
+            background: rgba(255,255,255,.05); border: 2px solid rgba(255,255,255,.08);
+            text-align: center; transition: .3s; font-size: 15px; font-weight: 600; color: #cbd5e1;
+        }
+        .role-card input[type="radio"]:checked + label {
+            background: rgba(59,130,246,.2); border-color: #3b82f6; color: white;
+        }
+        .role-card label:hover { background: rgba(255,255,255,.1); }
+        .role-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+        .btn {
+            width: 100%; padding: 15px; border: none; cursor: pointer;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white; font-size: 16px; font-weight: 700; border-radius: 16px;
+            box-shadow: 0 12px 24px rgba(59,130,246,.28); transition: .3s;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 18px 35px rgba(59,130,246,.35); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Welcome to <span>Carpool</span></h1>
+    <p class="subtitle">Tell us a bit about yourself to get started.</p>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for msg in messages %}<li>{{ msg }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="{{ user.username }}" required>
+
+        <label>I am a…</label>
+        <div class="role-options">
+            <div class="role-card">
+                <input type="radio" id="role_passenger" name="role" value="passenger" required>
+                <label for="role_passenger">
+                    <span class="role-icon">🧳</span>Passenger
+                </label>
+            </div>
+            <div class="role-card">
+                <input type="radio" id="role_driver" name="role" value="driver">
+                <label for="role_driver">
+                    <span class="role-icon">🚗</span>Driver
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Continue →</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,17 +1,32 @@
 from django import forms
-from django.forms import ModelForm
 from .models import Trip
 
-class TripForm(ModelForm):
+
+class TripForm(forms.ModelForm):
     class Meta:
         model = Trip
-        fields = ['name', 'departure_time','arrival_time' ,'start_node', 'end_node', 'ticket_price', 'available_seats']
+        fields = ['name', 'departure_time', 'arrival_time', 'start_node', 'end_node', 'ticket_price', 'available_seats']
         widgets = {
-            'departure_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'arrival_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'start_node': forms.Select(attrs={'class': 'form-control'}),
-            'end_node': forms.Select(attrs={'class': 'form-control'}),
-            'driver': forms.TextInput(attrs={'class': 'form-control'}),
-            'max_passengers': forms.NumberInput(attrs={'class': 'form-control'}),
-            'available_seats': forms.NumberInput(attrs={'class': 'form-control'}),
+            'departure_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+            'arrival_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.setdefault('class', 'form-control')
+
+    def clean(self):
+        cleaned = super().clean()
+        start = cleaned.get('start_node')
+        end = cleaned.get('end_node')
+        depart = cleaned.get('departure_time')
+        arrive = cleaned.get('arrival_time')
+
+        if start and end and start == end:
+            raise forms.ValidationError("Start and end nodes must be different.")
+
+        if depart and arrive and arrive <= depart:
+            raise forms.ValidationError("Arrival time must be after departure time.")
+
+        return cleaned

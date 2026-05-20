@@ -1,710 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passenger Dashboard</title>
-
-<style>
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Inter',sans-serif;
-}
-
-body{
-    min-height:100vh;
-
-    background:
-        radial-gradient(circle at top left, rgba(99,102,241,0.22), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(59,130,246,0.18), transparent 30%),
-        #0f172a;
-
-    color:white;
-    padding:50px 20px;
-}
-
-/* ===== HEADER ===== */
-
-.page-header{
-    max-width:1200px;
-    margin:auto;
-    margin-bottom:45px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:20px;
-}
-
-.header-left h1{
-    font-size:54px;
-    font-weight:800;
-    margin-bottom:10px;
-}
-
-.header-left span{
-    background:linear-gradient(to right,#60a5fa,#a78bfa);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.header-left p{
-    color:#94a3b8;
-    font-size:16px;
-}
-
-/* ===== BACK BUTTON ===== */
-
-.back-btn{
-    text-decoration:none;
-    color:white;
-
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.08);
-
-    padding:12px 20px;
-    border-radius:14px;
-
-    backdrop-filter:blur(10px);
-
-    transition:0.3s ease;
-}
-
-.back-btn:hover{
-    transform:translateY(-3px);
-    background:rgba(255,255,255,0.12);
-}
-
-/* ===== PROFILE SECTION ===== */
-
-.profile-section{
-    max-width:1200px;
-    margin:auto;
-    margin-bottom:35px;
-
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:24px;
-}
-
-/* ===== CARDS ===== */
-
-.profile-card,
-.stats-card{
-    position:relative;
-    overflow:hidden;
-
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.08);
-
-    backdrop-filter:blur(18px);
-
-    border-radius:28px;
-    padding:32px;
-}
-
-.profile-card::before,
-.stats-card::before{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    background:linear-gradient(
-        135deg,
-        rgba(255,255,255,0.08),
-        transparent
-    );
-
-    pointer-events:none;
-}
-
-/* ===== PROFILE ===== */
-
-.profile-top{
-    display:flex;
-    align-items:center;
-    gap:22px;
-}
-
-.avatar{
-    width:90px;
-    height:90px;
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:34px;
-    font-weight:800;
-
-    background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-
-    box-shadow:
-        0 10px 24px rgba(59,130,246,0.35);
-}
-
-.profile-info h2{
-    font-size:30px;
-    margin-bottom:10px;
-}
-
-.profile-info p{
-    color:#cbd5e1;
-    line-height:1.8;
-}
-
-/* ===== STATS ===== */
-
-.stats-title{
-    font-size:18px;
-    font-weight:700;
-    margin-bottom:20px;
-}
-
-.stat-number{
-    font-size:52px;
-    font-weight:800;
-
-    background:linear-gradient(to right,#60a5fa,#a78bfa);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-
-    margin-bottom:8px;
-}
-
-.stat-label{
-    color:#94a3b8;
-}
-
-/* ===== ACTION BUTTONS ===== */
-
-.actions{
-    max-width:1200px;
-    margin:0 auto 45px auto;
-
-    display:flex;
-    gap:18px;
-    flex-wrap:wrap;
-}
-
-.action-btn{
-    flex:1;
-    min-width:240px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    text-decoration:none;
-
-    padding:18px;
-    border-radius:22px;
-
-    font-weight:700;
-    color:white;
-
-    background:linear-gradient(135deg,#3b82f6,#6366f1);
-
-    transition:all .3s ease;
-
-    box-shadow:
-        0 12px 24px rgba(59,130,246,0.25);
-}
-
-.action-btn:hover{
-    transform:translateY(-5px);
-
-    box-shadow:
-        0 18px 35px rgba(59,130,246,0.35),
-        0 0 20px rgba(99,102,241,0.25);
-}
-
-/* ===== SECTION TITLE ===== */
-
-.section-title{
-    max-width:1200px;
-    margin:0 auto 24px auto;
-
-    font-size:34px;
-    font-weight:800;
-}
-
-/* ===== GRID ===== */
-
-.trip-grid{
-    max-width:1200px;
-    margin:auto auto 50px auto;
-
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-    gap:28px;
-}
-
-/* ===== CARD ===== */
-
-.trip-card{
-    position:relative;
-    overflow:hidden;
-
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.08);
-
-    backdrop-filter:blur(18px);
-
-    border-radius:28px;
-    padding:30px;
-
-    transition:all .35s ease;
-}
-
-.trip-card::before{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    background:linear-gradient(
-        135deg,
-        rgba(255,255,255,0.08),
-        transparent
-    );
-
-    opacity:0;
-    transition:0.3s;
-}
-
-.trip-card:hover::before{
-    opacity:1;
-}
-
-.trip-card:hover{
-    transform:translateY(-10px);
-
-    border-color:rgba(96,165,250,0.35);
-
-    box-shadow:
-        0 20px 40px rgba(0,0,0,0.35),
-        0 0 25px rgba(59,130,246,0.15);
-}
-
-/* ===== TITLE ===== */
-
-.trip-title{
-    font-size:24px;
-    font-weight:800;
-    margin-bottom:22px;
-}
-
-/* ===== ROUTE ===== */
-
-.route-box{
-    background:rgba(15,23,42,0.72);
-
-    border:1px solid rgba(255,255,255,0.06);
-
-    border-radius:18px;
-    padding:20px;
-
-    line-height:1.8;
-    color:#e2e8f0;
-
-    margin-bottom:22px;
-}
-
-/* ===== DETAILS ===== */
-
-.detail-row{
-    display:flex;
-    justify-content:space-between;
-
-    padding:12px 0;
-
-    border-bottom:1px solid rgba(255,255,255,0.06);
-}
-
-.detail-row:last-child{
-    border-bottom:none;
-}
-
-.detail-label{
-    color:#94a3b8;
-}
-
-.detail-value{
-    font-weight:600;
-}
-
-/* ===== STATUS ===== */
-
-.status{
-    display:inline-block;
-
-    margin-top:20px;
-
-    padding:8px 14px;
-    border-radius:999px;
-
-    font-size:13px;
-    font-weight:700;
-}
-
-.pending{
-    background:rgba(245,158,11,0.12);
-    color:#fbbf24;
-    border:1px solid rgba(245,158,11,0.18);
-}
-
-.accepted{
-    background:rgba(34,197,94,0.12);
-    color:#4ade80;
-    border:1px solid rgba(34,197,94,0.18);
-}
-
-/* ===== OFFER BUTTON ===== */
-
-.offer-btn{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    text-decoration:none;
-
-    margin-top:22px;
-
-    width:100%;
-
-    padding:15px;
-    border-radius:18px;
-
-    font-weight:700;
-    color:white;
-
-    background:linear-gradient(135deg,#22c55e,#16a34a);
-
-    transition:all .3s ease;
-
-    box-shadow:
-        0 12px 24px rgba(34,197,94,0.25);
-}
-
-.offer-btn:hover{
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 18px 35px rgba(34,197,94,0.35),
-        0 0 20px rgba(34,197,94,0.2);
-}
-
-/* ===== EMPTY ===== */
-
-.empty-state{
-    max-width:1200px;
-    margin:auto;
-
-    text-align:center;
-
-    padding:90px 20px;
-
-    background:rgba(255,255,255,0.04);
-
-    border:1px dashed rgba(255,255,255,0.08);
-
-    border-radius:28px;
-
-    color:#94a3b8;
-}
-
-.empty-state h2{
-    font-size:38px;
-    margin-bottom:12px;
-}
-
-/* ===== MOBILE ===== */
-
-@media(max-width:900px){
-
-    .profile-section{
-        grid-template-columns:1fr;
-    }
-}
-
-@media(max-width:768px){
-
-    body{
-        padding:30px 16px;
-    }
-
-    .header-left h1{
-        font-size:40px;
-    }
-
-    .profile-card,
-    .stats-card,
-    .trip-card{
-        padding:24px;
-    }
-
-    .profile-top{
-        flex-direction:column;
-        text-align:center;
-    }
-
-    .detail-row{
-        flex-direction:column;
-        gap:6px;
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <title>Passenger Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh;
+            background: radial-gradient(circle at top left, rgba(99,102,241,.2), transparent 30%),
+                        radial-gradient(circle at bottom right, rgba(59,130,246,.15), transparent 30%), #0f172a;
+            color: white; padding: 32px 20px; }
+        .header { max-width: 1100px; margin: 0 auto 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        h1 { font-size: 42px; font-weight: 800; }
+        h1 span { background: linear-gradient(to right,#60a5fa,#a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn { padding: 11px 20px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 14px; transition: .3s; border: none; cursor: pointer; display: inline-block; }
+        .btn-primary { background: linear-gradient(135deg,#3b82f6,#6366f1); color: white; }
+        .btn-ghost { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); color: white; }
+        .btn:hover { transform: translateY(-2px); opacity: .9; }
+        .main { max-width: 1100px; margin: 0 auto; }
+        .messages { margin-bottom: 24px; list-style: none; }
+        .messages li { padding: 12px 16px; border-radius: 10px; margin-bottom: 8px; font-size: 14px; }
+        .messages li.success { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3); color: #86efac; }
+        .messages li.error { background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; }
+        h2 { font-size: 22px; font-weight: 700; margin: 32px 0 16px; color: #e2e8f0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+        .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 22px; transition: .3s; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(0,0,0,.3); }
+        .card-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+        .card-info { color: #94a3b8; font-size: 14px; margin-bottom: 5px; }
+        .status-badge { display: inline-block; padding: 3px 11px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; }
+        .status-pending { background: rgba(234,179,8,.15); color: #fde047; }
+        .status-accepted { background: rgba(34,197,94,.15); color: #86efac; }
+        .status-cancelled { background: rgba(239,68,68,.15); color: #fca5a5; }
+        .card-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+        .card-actions .btn { font-size: 13px; padding: 8px 14px; }
+        .empty { text-align: center; padding: 40px 20px; color: #475569; }
+        .current-node { font-size: 13px; color: #60a5fa; margin-bottom: 8px; }
+    </style>
 </head>
-
 <body>
 
-<!-- ===== HEADER ===== -->
-
-<div class="page-header">
-
-    <div class="header-left">
-
-        <h1>
-            Passenger <span>Dashboard</span>
-        </h1>
-
-        <p>
-            Track your rides, manage requests, and explore new trips.
-        </p>
-
+<div class="header">
+    <div>
+        <h1>My <span>Dashboard</span></h1>
+        <p style="color:#94a3b8;margin-top:6px">Welcome, {{ profile_user.username }}</p>
     </div>
-
-    <a href="{% url 'trips:index' %}" class="back-btn">
-        ← Back Home
-    </a>
-
+    <div class="nav-links">
+        <a href="{% url 'trips:list_trips' %}" class="btn btn-primary">Find Trips</a>
+        <a href="{% url 'trips:create_request' %}" class="btn btn-ghost">Request Carpool</a>
+        <a href="{% url 'users:logout' %}" class="btn btn-ghost">Logout</a>
+    </div>
 </div>
 
-<!-- ===== PROFILE ===== -->
+<div class="main">
 
-<div class="profile-section">
+    {% if messages %}
+    <ul class="messages">
+        {% for msg in messages %}
+        <li class="{{ msg.tags }}">{{ msg }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
-    <div class="profile-card">
-
-        <div class="profile-top">
-
-            <div class="avatar">
-                {{ profile_user.username|first|upper }}
+    <!-- Booked Trips -->
+    <h2>My Trips</h2>
+    {% if trips %}
+    <div class="grid">
+        {% for trip in trips %}
+        <div class="card">
+            <div class="card-title">{{ trip.name }}</div>
+            <div class="card-info">📍 {{ trip.start_node }} → {{ trip.end_node }}</div>
+            <div class="card-info">🕐 {{ trip.departure_time|date:"d M Y, H:i" }}</div>
+            {% if trip.current_node %}
+            <div class="current-node">📌 Currently at: {{ trip.current_node.name }}</div>
+            {% endif %}
+            <div class="card-actions">
+                <a href="{% url 'trips:trip_detail' trip.slug %}" class="btn btn-ghost">Track</a>
             </div>
-
-            <div class="profile-info">
-
-                <h2>
-                    {{ profile_user.username }}
-                </h2>
-
-                <p>
-                    🧍 Role: {{ profile_user.role }}
-                    <br>
-                    📧 {{ profile_user.email }}
-                </p>
-
-            </div>
-
         </div>
-
+        {% endfor %}
     </div>
+    {% else %}
+    <div class="empty"><p>No booked trips yet. <a href="{% url 'trips:list_trips' %}" style="color:#60a5fa">Browse trips →</a></p></div>
+    {% endif %}
 
-    <div class="stats-card">
+    <!-- Carpool Requests -->
+    <h2>My Carpool Requests</h2>
+    {% if requests %}
+    <div class="grid">
+        {% for req in requests %}
+        <div class="card">
+            <div class="card-title">{{ req.pickup_node }} → {{ req.destination_node }}</div>
+            <span class="status-badge status-{{ req.status }}">{{ req.status }}</span>
+            <div class="card-info">Submitted: {{ req.created_at|date:"d M Y, H:i" }}</div>
 
-        <div class="stats-title">
-            Ride Statistics
-        </div>
-
-        <div class="stat-number">
-            {{ trips|length }}
-        </div>
-
-        <div class="stat-label">
-            Trips Booked
-        </div>
-
-    </div>
-
-</div>
-
-<!-- ===== ACTIONS ===== -->
-
-<div class="actions">
-
-    <a href="{% url 'trips:list_trips' %}" class="action-btn">
-        🚗 Browse Trips
-    </a>
-
-    <a href="{% url 'trips:create_request' %}" class="action-btn">
-        📩 Request Ride
-    </a>
-
-</div>
-
-<!-- ===== BOOKED TRIPS ===== -->
-
-<div class="section-title">
-    Your Booked Trips
-</div>
-
-{% if trips %}
-
-<div class="trip-grid">
-
-{% for trip in trips %}
-
-<div class="trip-card">
-
-    <div class="trip-title">
-        🚘 {{ trip.name }}
-    </div>
-
-    <div class="route-box">
-
-        📍 {{ trip.start_node }}
-        <br><br>
-
-        ⟶
-        <br><br>
-
-        🏁 {{ trip.end_node }}
-
-    </div>
-
-    <div class="detail-row">
-        <span class="detail-label">Departure</span>
-        <span class="detail-value">{{ trip.departure_time }}</span>
-    </div>
-
-    <div class="detail-row">
-        <span class="detail-label">Driver</span>
-        <span class="detail-value">{{ trip.created_by.username }}</span>
-    </div>
-
-    <div class="detail-row">
-        <span class="detail-label">Ticket Price</span>
-        <span class="detail-value">₹{{ trip.ticket_price }}</span>
-    </div>
-
-</div>
-
-{% endfor %}
-
-</div>
-
-{% else %}
-
-<div class="empty-state">
-
-    <h2>No booked trips</h2>
-
-    <p>
-        You haven’t booked any rides yet.
-        Time to explore the road network.
-    </p>
-
-</div>
-
-{% endif %}
-
-<!-- ===== REQUESTS ===== -->
-
-<div class="section-title">
-    Your Carpool Requests
-</div>
-
-{% if requests %}
-
-<div class="trip-grid">
-
-{% for req in requests %}
-
-<div class="trip-card">
-
-    <div class="trip-title">
-        📩 Ride Request
-    </div>
-
-    <div class="route-box">
-
-        📍 {{ req.pickup_node }}
-        <br><br>
-
-        ⟶
-        <br><br>
-
-        🏁 {{ req.destination_node }}
-
-    </div>
-
-    <div class="detail-row">
-        <span class="detail-label">Status</span>
-
-        <span class="detail-value">
-
-            {% if req.status == "pending" %}
-                <span class="status pending">
-                    Pending
-                </span>
-            {% else %}
-                <span class="status accepted">
-                    Accepted
-                </span>
+            {% if req.offers.count > 0 %}
+            <div class="card-info" style="color:#60a5fa;margin-top:8px">{{ req.offers.count }} offer{{ req.offers.count|pluralize }} available</div>
             {% endif %}
 
-        </span>
-    </div>
-
-    <div class="detail-row">
-        <span class="detail-label">Offers Received</span>
-        <span class="detail-value">{{ req.offers.count }}</span>
-    </div>
-
-    {% if req.offers.count > 0 %}
-
-        <a href="{% url 'trips:request_offers' req.id %}"
-           class="offer-btn">
-
-            View Offers
-
-        </a>
-
-    {% else %}
-
-        <div class="status pending" style="margin-top:20px;">
-            Waiting for drivers...
+            <div class="card-actions">
+                {% if req.status == 'pending' %}
+                <a href="{% url 'trips:request_offers' req.id %}" class="btn btn-primary">View Offers</a>
+                <a href="{% url 'trips:cancel_request' req.id %}" class="btn" style="background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.3)">Cancel</a>
+                {% elif req.status == 'accepted' %}
+                <span style="color:#86efac;font-size:14px;font-weight:600">✓ Confirmed</span>
+                {% endif %}
+            </div>
         </div>
-
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty"><p>No requests yet. <a href="{% url 'trips:create_request' %}" style="color:#60a5fa">Request a carpool →</a></p></div>
     {% endif %}
 
 </div>
-
-{% endfor %}
-
-</div>
-
-{% else %}
-
-<div class="empty-state">
-
-    <h2>No requests yet</h2>
-
-    <p>
-        You haven’t created any carpool requests yet.
-    </p>
-
-</div>
-
-{% endif %}
-
 </body>
 </html>

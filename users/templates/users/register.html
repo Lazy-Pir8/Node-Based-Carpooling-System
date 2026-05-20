@@ -1,362 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register</title>
-
-<style>
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Inter',sans-serif;
-}
-
-body{
-    min-height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:20px;
-
-    overflow:hidden;
-
-    background:
-        radial-gradient(circle at top left, rgba(99,102,241,0.25), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(59,130,246,0.18), transparent 30%),
-        #0f172a;
-
-    position:relative;
-}
-
-/* ===== BACKGROUND GLOW ===== */
-
-body::before,
-body::after{
-    content:"";
-    position:absolute;
-
-    width:350px;
-    height:350px;
-
-    border-radius:50%;
-
-    filter:blur(80px);
-
-    z-index:0;
-}
-
-body::before{
-    top:-100px;
-    left:-100px;
-
-    background:rgba(99,102,241,0.28);
-}
-
-body::after{
-    bottom:-120px;
-    right:-100px;
-
-    background:rgba(59,130,246,0.22);
-}
-
-/* ===== REGISTER CARD ===== */
-
-.container{
-    position:relative;
-    z-index:1;
-
-    width:100%;
-    max-width:460px;
-
-    padding:42px;
-
-    border-radius:30px;
-
-    background:rgba(255,255,255,0.08);
-
-    border:1px solid rgba(255,255,255,0.08);
-
-    backdrop-filter:blur(22px);
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,0.45),
-        inset 0 1px 0 rgba(255,255,255,0.08);
-
-    overflow:hidden;
-}
-
-.container::before{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    background:linear-gradient(
-        135deg,
-        rgba(255,255,255,0.08),
-        transparent
-    );
-
-    pointer-events:none;
-}
-
-/* ===== BRAND ===== */
-
-.brand{
-    text-align:center;
-    margin-bottom:35px;
-}
-
-.brand-logo{
-    width:76px;
-    height:76px;
-
-    margin:auto auto 18px auto;
-
-    border-radius:24px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:34px;
-
-    background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-
-    box-shadow:
-        0 12px 24px rgba(59,130,246,0.35);
-}
-
-.brand h2{
-    font-size:34px;
-    font-weight:800;
-
-    margin-bottom:10px;
-
-    color:white;
-}
-
-.brand h2 span{
-    background:linear-gradient(to right,#60a5fa,#a78bfa);
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.brand p{
-    color:#94a3b8;
-    font-size:15px;
-    line-height:1.6;
-}
-
-/* ===== DJANGO FORM ===== */
-
-form{
-    width:100%;
-}
-
-form p{
-    margin-bottom:20px;
-}
-
-label{
-    display:block;
-
-    margin-bottom:10px;
-
-    color:#cbd5e1;
-    font-size:14px;
-    font-weight:600;
-}
-
-/* ===== INPUTS ===== */
-
-input,
-select{
-    width:100%;
-
-    padding:15px 16px;
-
-    border-radius:16px;
-
-    border:1px solid rgba(255,255,255,0.08);
-
-    background:rgba(15,23,42,0.7);
-
-    color:white;
-
-    font-size:15px;
-
-    transition:all .25s ease;
-}
-
-input::placeholder{
-    color:#64748b;
-}
-
-input:focus,
-select:focus{
-    outline:none;
-
-    border-color:rgba(96,165,250,0.5);
-
-    box-shadow:
-        0 0 0 4px rgba(59,130,246,0.15);
-
-    background:rgba(15,23,42,0.9);
-}
-
-/* ===== SELECT OPTION ===== */
-
-select option{
-    background:#0f172a;
-    color:white;
-}
-
-/* ===== BUTTON ===== */
-
-button{
-    width:100%;
-
-    margin-top:10px;
-
-    padding:16px;
-
-    border:none;
-    border-radius:18px;
-
-    font-size:16px;
-    font-weight:700;
-
-    color:white;
-
-    cursor:pointer;
-
-    background:linear-gradient(135deg,#3b82f6,#6366f1);
-
-    transition:all .3s ease;
-
-    box-shadow:
-        0 12px 24px rgba(59,130,246,0.28);
-}
-
-button:hover{
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 18px 35px rgba(59,130,246,0.4),
-        0 0 20px rgba(99,102,241,0.25);
-}
-
-/* ===== FOOTER ===== */
-
-.footer-text{
-    text-align:center;
-
-    margin-top:24px;
-
-    color:#94a3b8;
-    font-size:14px;
-}
-
-.footer-text a{
-    color:#60a5fa;
-    text-decoration:none;
-    font-weight:600;
-
-    transition:0.2s;
-}
-
-.footer-text a:hover{
-    color:#93c5fd;
-}
-
-/* ===== MOBILE ===== */
-
-@media(max-width:520px){
-
-    .container{
-        padding:30px 24px;
-        border-radius:24px;
-    }
-
-    .brand h2{
-        font-size:28px;
-    }
-
-    .brand-logo{
-        width:66px;
-        height:66px;
-        font-size:28px;
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif; min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at top left, rgba(99,102,241,.22), transparent 30%),
+                        radial-gradient(circle at bottom right, rgba(59,130,246,.18), transparent 30%), #0f172a;
+            color: white; padding: 24px;
+        }
+        .card {
+            background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+            backdrop-filter: blur(18px); border-radius: 28px; padding: 48px;
+            width: 100%; max-width: 460px; box-shadow: 0 20px 50px rgba(0,0,0,.4);
+        }
+        h1 { font-size: 30px; font-weight: 800; margin-bottom: 6px; }
+        h1 span { background: linear-gradient(to right,#60a5fa,#a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: #94a3b8; margin-bottom: 32px; font-size: 14px; }
+        .field { margin-bottom: 20px; }
+        .field label { display: block; font-weight: 600; color: #e2e8f0; margin-bottom: 8px; font-size: 14px; }
+        .field input {
+            width: 100%; background: rgba(15,23,42,.8); color: white;
+            border: 1px solid rgba(255,255,255,.1); padding: 14px 16px;
+            border-radius: 14px; font-size: 15px; outline: none; transition: .3s;
+        }
+        .field input:focus { border-color: #60a5fa; box-shadow: 0 0 0 4px rgba(96,165,250,.15); }
+        .errors { color: #fca5a5; font-size: 13px; margin-top: 6px; }
+        .role-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .role-card input[type="radio"] { display: none; }
+        .role-card label {
+            display: block; padding: 16px; border-radius: 14px; cursor: pointer; text-align: center;
+            background: rgba(255,255,255,.05); border: 2px solid rgba(255,255,255,.08);
+            font-size: 14px; font-weight: 600; color: #cbd5e1; transition: .3s;
+        }
+        .role-card input[type="radio"]:checked + label { background: rgba(59,130,246,.2); border-color: #3b82f6; color: white; }
+        .btn {
+            margin-top: 28px; width: 100%; padding: 15px; border: none; cursor: pointer;
+            background: linear-gradient(135deg, #3b82f6, #6366f1); color: white;
+            font-size: 16px; font-weight: 700; border-radius: 16px;
+            box-shadow: 0 12px 24px rgba(59,130,246,.28); transition: .3s;
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .login-link { text-align: center; margin-top: 20px; color: #94a3b8; font-size: 14px; }
+        .login-link a { color: #60a5fa; text-decoration: none; font-weight: 600; }
+        .google-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 14px; border-radius: 14px; margin-bottom: 24px;
+            background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+            color: white; font-size: 15px; font-weight: 600; text-decoration: none; transition: .3s;
+        }
+        .google-btn:hover { background: rgba(255,255,255,.14); }
+        .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; color: #475569; font-size: 13px; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.1); }
+    </style>
 </head>
-
 <body>
+<div class="card">
+    <h1>Create an <span>Account</span></h1>
+    <p class="subtitle">Join the carpool network today.</p>
 
-<div class="container">
+    <a href="{% url 'socialaccount_signup' %}" class="google-btn">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+        Continue with Google
+    </a>
 
-    <!-- ===== BRAND ===== -->
+    <div class="divider">or register with email</div>
 
-    <div class="brand">
-
-        <div class="brand-logo">
-            🚀
-        </div>
-
-        <h2>
-            Join <span>Carpool Connect</span>
-        </h2>
-
-        <p>
-            Create your account and start sharing smarter rides across the city.
-        </p>
-
-    </div>
-
-    <!-- ===== REGISTER FORM ===== -->
-
-    <form method="POST" action="{% url 'users:register' %}">
-
+    <form method="POST" novalidate>
         {% csrf_token %}
 
-        {{ form.as_p }}
+        <div class="field">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            {{ form.username }}
+            {% if form.username.errors %}<p class="errors">{{ form.username.errors|join:", " }}</p>{% endif %}
+        </div>
 
-        <button type="submit">
-            Create Account
-        </button>
+        <div class="field">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}<p class="errors">{{ form.email.errors|join:", " }}</p>{% endif %}
+        </div>
 
+        <div class="field">
+            <label for="{{ form.password.id_for_label }}">Password</label>
+            {{ form.password }}
+            {% if form.password.errors %}<p class="errors">{{ form.password.errors|join:", " }}</p>{% endif %}
+        </div>
+
+        <div class="field">
+            <label>I am a…</label>
+            <div class="role-options">
+                <div class="role-card">
+                    <input type="radio" id="role_p" name="role" value="passenger" required>
+                    <label for="role_p">🧳 Passenger</label>
+                </div>
+                <div class="role-card">
+                    <input type="radio" id="role_d" name="role" value="driver">
+                    <label for="role_d">🚗 Driver</label>
+                </div>
+            </div>
+            {% if form.role.errors %}<p class="errors">{{ form.role.errors|join:", " }}</p>{% endif %}
+        </div>
+
+        <button type="submit" class="btn">Register</button>
     </form>
 
-    <!-- ===== FOOTER ===== -->
-
-    <div class="footer-text">
-
-        Already have an account?
-
-        <a href="{% url 'users:login' %}">
-            Login
-        </a>
-
-    </div>
-
-    <div class="footer-text">
-
-        Or
-        {% load socialaccount %}
-        <a href="/accounts/google/login/">Continue with Google</a>
-
-    </div>
-
+    <p class="login-link">Already have an account? <a href="{% url 'users:login' %}">Sign in</a></p>
 </div>
-
 </body>
 </html>
