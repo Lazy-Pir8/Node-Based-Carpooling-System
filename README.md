@@ -2,11 +2,7 @@
 ```markdown
 # Node-Based Carpooling System
 
-A web application for carpooling built with Django, Docker, PostgreSQL, and Nginx. Users can create trips, request rides, and manage driver offers. This project is deployed on an AWS EC2 VPS and can be accessed publicly.
-
-## Live Site
-
-Check it out here: https://pir8lab.me
+A web application for carpooling built with Django, Docker, PostgreSQL, and Nginx. Users can create trips, request rides, and manage driver offers. This project is deployed on an AWS EC2 VPS but cannot be accessed publicly for now(**...previously deployed on AWS EC2, but it is no longer hosted.**).
 
 ## Features
 
@@ -15,6 +11,7 @@ Check it out here: https://pir8lab.me
 * **Logic:** Dynamic calculation of fares and detours.
 * **Management:** Admin interface for managing users and trips (Django admin).
 * **Infrastructure:** Fully containerized with Docker for easy deployment.
+* **Google OAuth 2.0** Has Also been Added.
 
 ## Tech Stack
 
@@ -79,7 +76,7 @@ Node-Based-Carpooling-System/
 * Reverse proxy handled by Nginx.
 * Application served via Gunicorn inside Docker containers.
 
-### CI/CD
+### CI/CD(**No Longer Works, I stopped it too, was a bit annoying**)
 
 * Automated deployment using GitHub Actions.
 * On every push to `main`:
@@ -88,7 +85,7 @@ Node-Based-Carpooling-System/
   - Database migrations are applied
   - Application is restarted
 
-### SSL Setup
+### SSL Setup (** Removed it Too)
 
 * SSL certificates generated using Certbot.
 * Certificates mounted into Docker Nginx container.
